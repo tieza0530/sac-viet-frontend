@@ -1,0 +1,54 @@
+"use client"
+import { IoSearch } from "react-icons/io5";
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const FormSchema = z.object({
+    valueSearch: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+})
+
+export function InputSearch() {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      valueSearch: "",
+    },
+  })
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+   console.log(data);
+   
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+        <FormField 
+          control={form.control}
+          name="valueSearch"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Bạn đang tìm kiếm sản phẩm nào ?" {...field} className="w-96" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button className="absolute top-0 right-0 shadow-none" type="submit" ><IoSearch /></Button>
+      </form>
+    </Form>
+  )
+}
