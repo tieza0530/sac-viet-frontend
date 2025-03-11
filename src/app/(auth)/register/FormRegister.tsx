@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { phoneRegex } from "@/app/contact/FormContact";
+import { registerProps } from "./page";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -27,10 +28,16 @@ const FormSchema = z.object({
   }),
   againPassword: z.string().min(6, {
     message: "Password must be at least 6 characters",
-  }),
-});
-
-export function RegisterForm() {
+  })
+}).refine((data) => data.password === data.againPassword, {
+  message: "Mật khẩu nhập lại không khớp!",
+  path: ["againPassword"]
+})
+export type RegisterFormProps= {
+  setIsValue: React.Dispatch<React.SetStateAction<boolean>>
+  setDataUser: React.Dispatch<React.SetStateAction<registerProps>>
+}
+export function RegisterForm({setIsValue , setDataUser}: RegisterFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -42,7 +49,8 @@ export function RegisterForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    setIsValue(true)
+    setDataUser(data)
   }
 
   return (
@@ -100,7 +108,7 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12">Đăng ký</Button>
+        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12]">Đăng ký</Button>
       </form>
     </Form>
   );

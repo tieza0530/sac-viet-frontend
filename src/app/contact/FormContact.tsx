@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 
-export const phoneRegex = /^(\+?\d{1,3}[-.\s]?)?(\d{9,15})$/; 
+export const phoneRegex = /^0\d{9}$/;
 
 const FormSchema = z.object({
   username: z.string().min(2, 'Tên ít nhất phải 2 ký tự!'),

@@ -66,7 +66,7 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12">Đăng nhập</Button>
+        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12 hover:bg-[#C95040]">Đăng nhập</Button>
       </form>
     </Form>
   );
