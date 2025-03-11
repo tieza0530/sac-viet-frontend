@@ -48,9 +48,10 @@ export const Header = () => {
         </div>
         <div className="flex justify-center items-center">
           <InputSearch />
+          <Link href={'/login'} className="ml-2">Đăng nhập</Link>
           <HoverCard>
             <HoverCardTrigger>
-              <PiUserListLight className=" text-3xl ml-6" />
+              <PiUserListLight className=" text-3xl ml-2" />
             </HoverCardTrigger>
             <HoverCardContent className="bg-white mt-1 w-auto border-none  ">
                 <Link href={'#'}>Quản lý tài khoản</Link>
