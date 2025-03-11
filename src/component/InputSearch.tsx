@@ -47,7 +47,7 @@ export function InputSearch() {
             </FormItem>
           )}
         />
-        <Button className="absolute top-0 right-0 shadow-none" type="submit" ><IoSearch /></Button>
+        <Button className="absolute top-0 right-0 shadow-none bg-inherit hover:bg-inherit text-black " type="submit" ><IoSearch /></Button>
       </form>
     </Form>
   )
