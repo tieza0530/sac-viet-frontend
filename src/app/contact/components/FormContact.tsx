@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { useState } from "react"
+import { FetchPostContact } from "./FetchPostContact"
 
 export const phoneRegex = /^0\d{9}$/;
 
@@ -27,7 +27,6 @@ const FormSchema = z.object({
 
 
 export function FormContact() {
-    const [formMessage, setFormMessage] = useState('');
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -39,22 +38,7 @@ export function FormContact() {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/post/api/contact`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: data.username, email: data.accountEmail, phone: data.phone , message: data.message
-        })
-    })
-    if(res.status === 200){
-        setFormMessage("Gửi tin nhắn thành công!")
-    }else{
-        setFormMessage("Hệ thông tạm thời đang bị lỗi! Vui lòng liện hệ bằng hotline.")
-    }
-   console.log(res , data);
-   
+    FetchPostContact(data);
   }
 
   return (
@@ -114,7 +98,6 @@ export function FormContact() {
             </FormItem>
           )}
         />
-        <p className="text-xs text-red-500">{formMessage}</p>
         </div>
         <div className="flex justify-end">
         <Button type="submit" className="bg-[#C95050] text-sm text-white mt-6">Gửi tin nhắn</Button>

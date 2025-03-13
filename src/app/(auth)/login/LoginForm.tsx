@@ -19,9 +19,7 @@ const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters",
-  }),
+  password: z.string()
 });
 
 export function LoginForm() {
@@ -33,8 +31,25 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/post/api/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: data.username.trim(), password: data.password }),
+      });
+      if(res.status === 200) {
+        localStorage.setItem("username", data.username)
+        setTimeout(() => {
+          window.location.href = '/';
+      }, 200); 
+       }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
   }
 
   return (
@@ -60,7 +75,7 @@ export function LoginForm() {
             <FormItem className="mt-4">
               <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
-                <Input placeholder="Mật khẩu" {...field}  className="h-10"/>
+                <Input placeholder="Mật khẩu" type="password"{...field}  className="h-10"/>
               </FormControl>
               <FormMessage />
             </FormItem>

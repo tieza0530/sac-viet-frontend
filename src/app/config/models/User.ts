@@ -5,7 +5,7 @@ const userSchema  = new mongoose.Schema({
     account: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    refreshToken: { type: String }
+    token : {type: String}
 }, {timestamps: true})
 
 userSchema.pre('save' , async function (next) {

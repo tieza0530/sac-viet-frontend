@@ -1,34 +1,14 @@
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
-import { FormContact } from "./FormContact";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import  Link  from "next/link";
+import { FormContact } from "./components/FormContact";
+import { BreadCrumb } from "./components/BreadCrumb";
+
 
 export default function Contact() {
   return (
     <div className="px-20">
       <div className="mt-10">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/">Trang chủ</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/contact" className="font-medium">Liên hệ</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+       <BreadCrumb />
       </div>
       <div className="grid grid-cols-12 bg-[#F2F2F2] text-sm">
         <div className="col-span-4 bg-white my-10 mr-10 p-10 rounded-sm">

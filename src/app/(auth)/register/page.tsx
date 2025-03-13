@@ -1,36 +1,11 @@
-"use client";
-import Link from "next/link";
 import { ImageLR } from "../ImageLR";
 import { RegisterForm } from "./FormRegister";
-import { InputOTPForm } from "./OtpForm";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 
-export type registerProps = {
-  username: string,
-  phone: string,
-  password: string,
-  againPassword: string,
-}
-export default function Register() {
-  const [isValue, setIsValue] = useState(false);
-  const [ dataUser , setDataUser ] = useState<registerProps>({
-    username: "",
-    phone: "",
-    password: "",
-    againPassword: "",
-  });
-  const [checkRegister , setCheckRegister ] = useState(false)
-  const router = useRouter();
+import Link from "next/link";
 
-  useEffect(() => {
-    if(checkRegister){
-     setTimeout(() => {
-      router.push('/')
-     }, 5000)
-    }
-  }, [checkRegister , router])
+export default  function Register() {
+  
   return (
     <div className="px-32 grid grid-cols-12">
       <div className="col-span-8 p-10">
@@ -41,13 +16,13 @@ export default function Register() {
           Đăng ký tài khoản
         </p>
         <div className="mt-10">
-          {!isValue ? <RegisterForm  setIsValue={setIsValue} setDataUser={setDataUser}/> : <InputOTPForm  dataUser={dataUser} setCheckRegister={setCheckRegister} />}
-          { !isValue && <p className="mt-2 text-sm">
+          <RegisterForm />
+          <p className="mt-2 text-sm">
             Bạn đã có tài khoản ?
-            <Link href="/login" className="font-medium">
+            <Link href={'/'} className="font-medium bg-inherit hover:bg-inherit text-black shadow-none pl-1 ">
               Đăng nhập
             </Link>
-          </p>}
+          </p>
         </div>
       </div>
     </div>

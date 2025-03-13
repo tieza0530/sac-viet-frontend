@@ -1,10 +1,8 @@
 "use client"
 import { IoSearch } from "react-icons/io5";
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -30,7 +28,6 @@ export function InputSearch() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
    console.log(data);
-   
   }
 
   return (
