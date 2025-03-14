@@ -61,7 +61,7 @@ export function InputOTPForm() {
       localStorage.removeItem("account");
       localStorage.removeItem("email");
       setCheckSatusOtp(true);
-    }, 120000);
+    },300000);
 
     try {
       const res = await fetchConfirmEmail({account, email, data, controller});
@@ -80,6 +80,15 @@ export function InputOTPForm() {
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
+    await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem("email")
+      })
+    })
   };
   return (
     <div className="flex items-center justify-center w-full">
