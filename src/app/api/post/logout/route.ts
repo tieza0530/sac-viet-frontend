@@ -1,7 +1,7 @@
+import * as dotenv from "dotenv";
+import User from "@/app/config/models/User";
 import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/app/config/models/User";
-import * as dotenv from "dotenv";
 dotenv.config();
 
 

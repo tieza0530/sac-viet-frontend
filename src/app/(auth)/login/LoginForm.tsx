@@ -14,15 +14,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { fetchLogin } from "./fetchLogin";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  password: z.string()
+  password: z.string(),
 });
 
 export function LoginForm() {
+  const router = useRouter();
+    const [messagePassword, setMessagePassword] = useState("");
+    const [messageAccount, setMessageAccount] = useState("");
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -33,20 +40,21 @@ export function LoginForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/post/api/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: data.username.trim(), password: data.password }),
-      });
-      if(res.status === 200) {
-        localStorage.setItem("username", data.username)
-        setTimeout(() => {
-          window.location.href = '/';
-      }, 200); 
-       }
+      const res = await fetchLogin({data})
+      if (res === 200) {
+        localStorage.setItem("account", data.username);
+        router.push("/");
+        router.refresh();
+      }else if(res === 401){
+        setMessagePassword("Mật khẩu không đúng!")
+      }
+      else if(res === 404){
+        setMessageAccount("Tài khoảng không đúng!")
+      }
+      setTimeout(() => {
+        setMessageAccount('')
+        setMessagePassword('')
+      }, 2000);
     } catch (error) {
       console.error("Error during fetch:", error);
     }
@@ -59,12 +67,18 @@ export function LoginForm() {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="relative">
               <FormLabel>Tài khoản</FormLabel>
               <FormControl>
-                <Input placeholder="Nhập tài khoản" {...field} className="h-10"/>
+                <Input
+                  placeholder="Nhập tài khoản"
+                  {...field}
+                  className="h-10"
+                  autoComplete="username"
+                />
               </FormControl>
               <FormMessage />
+              <p className="text-red-500 text-xs absolute -bottom-4 ml-1">{messageAccount}</p>
             </FormItem>
           )}
         />
@@ -72,16 +86,28 @@ export function LoginForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="mt-4">
+            <FormItem className="mt-4 relative">
               <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
-                <Input placeholder="Mật khẩu" type="password"{...field}  className="h-10"/>
+                <Input
+                  placeholder="Mật khẩu"
+                  type="password"
+                  {...field}
+                  className="h-10"
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
+              <p className="text-red-500 text-xs absolute -bottom-5 ml-1">{messagePassword}</p>
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12 hover:bg-[#C95040]">Đăng nhập</Button>
+        <Button
+          type="submit"
+          className="bg-[#C95050] text-white w-full mt-6 h-12 hover:bg-[#C95040]"
+        >
+          Đăng nhập
+        </Button>
       </form>
     </Form>
   );

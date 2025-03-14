@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import User from "@/app/config/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { connectDB } from "@/app/config/mongoose";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   await connectDB();

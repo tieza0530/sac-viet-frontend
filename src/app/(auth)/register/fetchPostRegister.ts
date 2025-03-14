@@ -1,6 +1,7 @@
-export const fetchPostRegister = async ({username , phone, password}: {username: string , phone: string, password: string}) => {
-    try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/post/api/register`, {
+
+export const fetchPostRegister = async ({username , email, password}: {username: string , email: string, password: string}) => {
+    try { 
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/post/register`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -8,15 +9,17 @@ export const fetchPostRegister = async ({username , phone, password}: {username:
             },
             body: JSON.stringify({
               account: username,
-              phone: phone,
+              email: email,
               password: password,
             }),
           });
           if(res.status === 200) {
-            localStorage.setItem("username", username)
+            localStorage.setItem("account", username)
+            localStorage.setItem("email", email)
           }
+          return res.status
     } catch (error) {
-        console.log("Error Register", error);
+        return error
     }
    
 }

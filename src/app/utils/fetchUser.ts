@@ -5,7 +5,7 @@ export  const FetchUser = async () : Promise<ApiResponse | null> => {
     const token =  (await cookies()).get("refreshToken")?.value;    
     if (!token) return null;
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/get/api/user`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/get/user`, {
             method: "GET",
             headers: {
                 "refreshToken" : `${token}`

@@ -1,18 +1,13 @@
 "use client"
 import { ImageLR } from "../ImageLR";
 import { LoginForm } from "./LoginForm";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 
 export default function Login() {
   const router = useRouter();
-    useEffect(()=> {
-      if(localStorage.getItem('username')){
-        router.push('/')
-      }
-    },[router])
+
   return (
     <div className="px-32 grid grid-cols-12">
       <div className="col-span-8 p-10">

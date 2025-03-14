@@ -28,13 +28,13 @@ export const InfoUser = ({ data }: { data: ApiResponse | null }) => {
     <div className="flex items-center justify-center">
      
       {!checkLogin ? (
-        <Button
+        <span
           onClick={() => router.push("/login")}
-          className="flex justify-center items-center cursor-pointer py-1 mr-4 bg-inherit hover:bg-[#f69797b9]  text-sm" 
+          className="flex justify-center items-center cursor-pointer py-1 mr-4 hover:bg-[#f69797b9] px-1 rounded-sm  text-sm" 
           title="Nhấn để đăng nhập"
         >
-          Đăng nhập <PiUserListLight className="p-0 text-2xl"/>
-        </Button>
+          Đăng nhập <PiUserListLight className="p-0 text-2xl ml-1"/>
+        </span>
       ) : (
         <div className="flex justify-center items-center cursor-pointer py-1 mr-4">
             <HoverCard>
@@ -45,7 +45,7 @@ export const InfoUser = ({ data }: { data: ApiResponse | null }) => {
                 <PiUserListLight className="text-2xl ml-1" />
               </HoverCardTrigger>
               <HoverCardContent className="mt-3 w-auto border-none mr-1 p-2 rounded-sm text-sm shadow-2xs z-10 text-black bg-white font-medium ">
-                <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
+                <Button onClick={()=> router.push('/user/profile')}className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
                 <br />
                 <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" >Đơn hàng</Button>
                 <br />
