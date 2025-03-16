@@ -1,4 +1,4 @@
-import { ImageLR } from "../../ImageLR";
+import { ImageLR } from "../ImageLR";
 import { InputOTPForm } from "./FormInputOtp";
 
 export default function ConfirmEmail() {

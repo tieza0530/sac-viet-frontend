@@ -6,15 +6,15 @@ export function middleware(req: NextRequest) {
   const cookieCheckUser = req.cookies.get("refreshToken")?.value;
   const pathname = req.nextUrl.pathname;
 
-  if (pathname === "/register/confirm-email"  && !cookieConfirm) {
+  if (pathname === "/confirm-email"  &&  !cookieConfirm ) {
     return NextResponse.redirect(new URL('/not-found', req.url));
   }
-  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/register/confirm-email")) {
+  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/confirm-email")) {
     return NextResponse.redirect(new URL('/', req.url)); 
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/register/confirm-email", "/login", "/register"], 
+  matcher: ["/confirm-email", "/login", "/register"], 
 };
