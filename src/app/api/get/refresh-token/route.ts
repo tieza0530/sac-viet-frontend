@@ -8,26 +8,20 @@ export async function GET(req: NextRequest) {
     
         if(!refreshToken){
             return NextResponse.json({
-                message: 'No refresh token provided'
+                message: 'Missing refresh token'
             }, {status: 401})
         }
-        const decoded = jwt.verify(refreshToken , SECRET_KEY) as {id: string , account: string , email: string}
-        if(!decoded){
-            return NextResponse.json(
-                { message: "Invalid refresh token"
-                },{status: 403} )
-        }
-        const id = decoded.id
-        const email = decoded.email
-        const account = decoded.account
 
-        const accessToken = jwt.sign({id , account ,email} , SECRET_KEY , { expiresIn: '15m'})
+        const decoded = jwt.verify(refreshToken , SECRET_KEY) as {id: string , account: string , email: string}
+
+        const accessToken = jwt.sign({id: decoded.id , account: decoded.account ,email: decoded.email} , SECRET_KEY , { expiresIn: '15m'})
         return NextResponse.json({
             accessToken,
             message: 'Success'
         }, {status: 200, statusText: "Success"})
+
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return NextResponse.json({
              message: "Internal server error"
         }, {status: 500})

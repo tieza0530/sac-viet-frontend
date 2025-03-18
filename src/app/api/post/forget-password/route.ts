@@ -13,45 +13,46 @@ export async function POST(req: NextRequest) {
 
   try {
     const { email } = await req.json();
-    
+
     const exitedUser = await User.findOne({ email });
     if (!exitedUser) {
       return NextResponse.json(
         {
-          message: "Email không tồn tại!",
+          message: "Email does not exist!",
         },
-        { status: 400, statusText: "Invalid" }
+        { status: 400 }
       );
     }
+    await Otp.findOneAndDelete({ email });
     const sendOtp = new Otp({ email: email, otp: otp });
     await sendOtp.save();
     const accessToken = jwt.sign({ email }, SECRET_KEY, {
       expiresIn: "5m",
     });
+    await sendEmail(
+      email,
+      "OTP xác nhận ",
+      `Chào bạn đến với Sắc Việt ! Đây là email xác nhận otp cho password. Vui lòng không chia sẻ OTP với bất kì ai. Mã OTP của bạn là:  ${otp}`
+    );
     const response = NextResponse.json(
       {
         accessToken,
         message: "Success",
       },
-      { status: 200, statusText: "Success" }
+      { status: 200 }
     );
     response.headers.append(
-        "Set-Cookie",
+      "Set-Cookie",
       `confirm_access=${accessToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=300`
-        )
-        await sendEmail(
-          email,
-          "OTP xác nhận ",
-          `Chào bạn đến với Sắc Việt ! Đây là email xác nhận otp cho password. Vui lòng không chia sẻ OTP với bất kì ai. Mã OTP của bạn là:  ${otp}`
-        );
-      return response
+    );
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       {
-        message: "Error",
+        message: "Internal Server Error. Please try again later!",
       },
-      { status: 500, statusText: "Error" }
+      { status: 500 }
     );
   }
 }

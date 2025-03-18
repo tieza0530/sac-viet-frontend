@@ -5,56 +5,51 @@ import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
 dotenv.config();
 
-
 export async function POST(req: NextRequest) {
   try {
-    const { accessToken } = await req.json();    
+    const { accessToken } = await req.json();
     if (!accessToken) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const decoded = jwt.verify(accessToken, SECRET_KEY) as { email: string; account: string };
-    
-    if(!decoded){
+    const decoded = jwt.verify(accessToken, SECRET_KEY) as {
+      email: string;
+      account: string;
+    };
+
+    if (!decoded) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    const email = decoded.email
+    const email = decoded.email;
     const existed = await User.findOne({ email });
-    
-    if (!existed) {
-        return NextResponse.json(
-          {
-            data: null,
-            message: "Không tìm thấy tài khoản!",
-          },
-          { status: 404, statusText: "Not Found" }
-        );
-      }
-    const response = NextResponse.json(
-        {
-          data: null,
-          message: "Đăng xuất thành công!",
-        },
-        { status: 200, statusText: "OK" }
-      );
-    existed.token = ''
-    await existed.save()
-    response.cookies.set('refreshToken', '', {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        expires: new Date(0),  
-      });
-    return response;
 
+    if (!existed) {
+      return NextResponse.json(
+        { message: "Account not found!" },
+        { status: 404 }
+      );
+    }
+    existed.token = "";
+    await existed.save();
+    const response = NextResponse.json(
+      {
+        message: "Logged out successfully!",
+      },
+      { status: 200 }
+    );
+
+    response.headers.append(
+      "Set-Cookie",
+      `refreshToken=; Path=/; HttpOnly; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`
+    );
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       {
-        data: null,
-        message: "Error",
+        message: "An error occurred. Please try again later.",
       },
-      { status: 500, statusText: "Failed" }
+      { status: 500 }
     );
   }
 }

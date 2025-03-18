@@ -7,24 +7,32 @@ export async function PATCH(req: NextRequest) {
     try {
         const {email , password} = await req.json();
         const findUser = await User.findOne({email})
-        if(!findUser && !password){
+
+        if(!findUser){
             return NextResponse.json({
-                message: "Không tìm thấy tài khoản"
-            },{status: 400, statusText: "Invalid"})
+                message: "Not Found account!"
+            },{status: 404})
         }
+        if(!password){
+            return NextResponse.json({
+                message: "Password not null!"
+            },{status: 400}) 
+        }
+
         findUser.password = password
-        await findUser.save()
+        await findUser.save();
+
         return NextResponse.json({
-            message: "Cập nhật mật khẩu thành công"
+            message: "Update Password Success!"
         }, { status: 200 });
 
     } catch (error) {
         console.error(error);
         return NextResponse.json(
             {
-                message: "Đã xảy ra lỗi"
+                message: "Internal Server Error"
             },
-            { status: 500, statusText: "Internal Server Error" }
+            { status: 500 }
         );
     }
     

@@ -3,26 +3,36 @@ import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    await connectDB();
-    try {
-        const { emailCustomer } = await req.json();
-        const existed = await SubscribeEmail.findOne({emailCustomer})
-        if(!existed){
-        const newSubscribeEmail = await SubscribeEmail.create({emailCustomer})
-        return NextResponse.json({
-            data: newSubscribeEmail,
-            message: "Success"
-        }, {status: 200, statusText: "Success"})
+  await connectDB();
+  try {
+    const { emailCustomer } = await req.json();
+
+    const existingEmail = await SubscribeEmail.findOne({ emailCustomer });
+    if (!existingEmail) {
+      const newSubscription = await SubscribeEmail.create({ emailCustomer });
+
+      return NextResponse.json(
+        {
+          data: newSubscription,
+          message: "Subscription successful!",
+        },
+        { status: 200 }
+      );
     }
-    return NextResponse.json({
-        data: null,
-        message: "Email đã tồn tại trong hệ thống !"
-    }, {status: 400, statusText: "Invalid!"})
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({
-            data: null,
-            message: "Error"
-        }, {status: 500, statusText: "Failed!"})
-    }
+
+    return NextResponse.json(
+      {
+        message: "This email is already subscribed!",
+      },
+      { status: 400 }
+    );
+  } catch (error) {
+    console.error("Error in email subscription:", error);
+    return NextResponse.json(
+      {
+        message: "An error occurred. Please try again later.",
+      },
+      { status: 500 }
+    );
+  }
 }

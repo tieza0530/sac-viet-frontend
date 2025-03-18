@@ -7,54 +7,50 @@ import { SECRET_KEY } from "@/app/helper/constant";
 export async function POST(req: NextRequest) {
   const { otp, email, account, accessTokenRegis } = await req.json();
   try {
-
     if (!email || !account || !otp) {
       return NextResponse.json(
-        { message: "Thiếu thông tin email, tài khoản hoặc OTP!" },
+        { message: "Missing email, account, or OTP!" },
         { status: 400 }
       );
     }
-    if(!accessTokenRegis){
-      return NextResponse.json(
-        { message: "Unauthorized" },
-        { status: 401 }
-      );
+    if (!accessTokenRegis) {
+      return NextResponse.json({ message: "Unauthorized access!" }, { status: 401 });
     }
     const checkUserConfirm = await Otp.findOne({ accessTokenRegis });
     if (!checkUserConfirm) {
       return NextResponse.json(
-        { message: "OTP không đúng hoặc đã hết hạn!" },
+        { message: "Invalid or expired OTP!" },
         { status: 400 }
       );
     }
     if (checkUserConfirm.otp !== otp.pin) {
       return NextResponse.json(
-        { message: "OTP không hợp lệ!" },
+        { message: "Incorrect OTP!" },
         { status: 400 }
       );
     }
     const findUser = await User.findOne({ email });
     if (!findUser) {
       return NextResponse.json(
-        { message: "Không tìm thấy người dùng!" },
+        { message: "User not found!" },
         { status: 404 }
       );
     }
-    const id = findUser._id
+    const id = findUser._id;
     const accessToken = jwt.sign({ id, account, email }, SECRET_KEY, {
       expiresIn: "2m",
     });
-    const refreshToken = jwt.sign({id, account, email }, SECRET_KEY, {
+    const refreshToken = jwt.sign({ id, account, email }, SECRET_KEY, {
       expiresIn: "7d",
     });
 
     findUser.token = refreshToken;
     findUser.authenticated = true;
     await findUser.save();
-    await Otp.findOneAndDelete({email})
+    await Otp.findOneAndDelete({ email });
     const response = NextResponse.json(
-      { accessToken, message: "Xác thực thành công!" },
-      { status: 200, statusText:"Success" }
+      { accessToken, message: "OTP verification successful!" },
+      { status: 200 }
     );
     response.headers.append(
       "Set-Cookie",
@@ -63,10 +59,10 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error) {
     console.error("Lỗi xác thực:", error);
-    await Otp.findOneAndDelete({email})
-    await User.findOneAndDelete({email})
+    await Otp.findOneAndDelete({ email });
+    await User.findOneAndDelete({ email });
     return NextResponse.json(
-      { message: "Đã xảy ra lỗi", error },
+      { message: "An error occurred!" },
       { status: 500 }
     );
   }

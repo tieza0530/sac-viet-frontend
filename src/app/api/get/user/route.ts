@@ -25,12 +25,11 @@ const authHeader = req.headers.get("authorization");
           data: findUser,
           message: "Success",
         },
-        { status: 201, statusText: "Success" }
+        { status: 200, statusText: "Success" }
       );
     }
-    return console.log("Failed");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json(
       {
         data: null,

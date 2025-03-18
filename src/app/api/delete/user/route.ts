@@ -4,28 +4,34 @@ import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
-    await connectDB();
+  await connectDB();
   try {
-    const { email, account } = await req.json();      
-    const findUser = await User.findOneAndDelete({ email, account ,authenticated: false});    
-   const findUserOTP = await Otp.findOneAndDelete({ email });
-    
-
-    if (findUser && findUserOTP ) {
+    const { email, account } = await req.json();
+    if (!email || !account) {
       return NextResponse.json(
-        {
-          message: "Xóa tài khoản thành công!",
-        },
-        { status: 200, statusText: "Done!!" }
+        { message: "Missing email or account!" },
+        { status: 400 }
       );
     }
+
+    const findUser = await User.findOneAndDelete({
+      email,
+      account,
+      authenticated: false,
+    });
+    const findUserOTP = await Otp.findOneAndDelete({ email });
+
+    if (!findUser && !findUserOTP) {
+      return NextResponse.json({ message: "NotFound !" }, { status: 404 });
+    }
     return NextResponse.json(
-      { message: "Không tìm thấy tài khoản chưa xác nhận!" },
-      { status: 404 }
+      {
+        message: "Delete Success!",
+      },
+      { status: 200 }
     );
   } catch (error) {
-    console.log(error);
-
+    console.error(error);
     return NextResponse.json(
       {
         message: "Error",
