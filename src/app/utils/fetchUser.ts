@@ -8,25 +8,22 @@ import { getNewAccessToken } from "./getNewAccessToken";
 export  const FetchUser =  () => {
     const { accessToken , setAccessToken } = useAuth();
     const [user, setUser] = useState<ApiResponse | null>(null);
-    const [newAccessToken , setNewAccessToken] = useState('')
     useEffect(()=> {
     const getUser = async ()=>{
         try {
             if(accessToken === null){
                const res = await getNewAccessToken()               
-               setNewAccessToken(res?.data.accessToken);
                setAccessToken(res?.data.accessToken)
-               if(res?.status === 401 || res?.status === 403 || res?.status === 500  ){
+               if(res?.status === 401 || res?.status === 403 || res?.status === 500 ){
                 localStorage.removeItem("account")
                 localStorage.removeItem("email")
                }
-               
             }
-            if(newAccessToken || accessToken){                
+            if(accessToken){                
             const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/user`, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${accessToken || newAccessToken}`
+                    "Authorization": `Bearer ${accessToken}`
                 },
                 cache: "no-store", 
             });
@@ -40,9 +37,7 @@ export  const FetchUser =  () => {
         }
     }
         getUser();
-    }, [accessToken ,newAccessToken , setAccessToken])
-
+    }, [accessToken , setAccessToken])
     return user
-   
 }
 

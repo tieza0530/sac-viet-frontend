@@ -9,12 +9,12 @@ export function middleware(req: NextRequest) {
   if (pathname === "/confirm-email"  &&  !cookieConfirm ) {
     return NextResponse.redirect(new URL('/not-found', req.url));
   }
-  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/confirm-email")) {
+  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/confirm-email" || pathname === '/forget-password')) {
     return NextResponse.redirect(new URL('/', req.url)); 
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/confirm-email", "/login", "/register"], 
+  matcher: ["/confirm-email", "/login", "/register", '/forget-password'], 
 };
