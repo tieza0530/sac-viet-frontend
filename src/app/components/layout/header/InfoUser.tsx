@@ -9,9 +9,22 @@ import { PiUserListLight } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { HandleLogout } from "./HandleLogout";
+import { FetchUser } from "@/app/utils/fetchUser";
+import { useAuth } from "@/app/AuthContext";
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
-export const InfoUser = ({ data }: { data: ApiResponse | null }) => {
+export const InfoUser =  () => {
+const [data , setData ] = useState<ApiResponse | null>();
+const { accessToken ,setAccessToken } = useAuth();
+
+  const getData = async() =>{
+    const data = await FetchUser();
+    if(data === null){
+      return;
+    }
+    setData(data)
+  }
+  getData();
   const [checkLogin, setCheckLogin] = useState(false);
   const router = useRouter();
 
@@ -22,14 +35,28 @@ export const InfoUser = ({ data }: { data: ApiResponse | null }) => {
   }, [data , checkLogin]);
   
   const handleLogout = async () => {
-         HandleLogout()
-  };
+   const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessToken }),
+      });
+      if(res.status === 200){
+        setAccessToken(null);
+        localStorage.removeItem("account");
+        localStorage.removeItem("email");
+        document.location.reload();
+        router.push('/')
+        router.refresh()
+      }  
+    };
   return (
     <div className="flex items-center justify-center">
      
       {!checkLogin ? (
         <span
-          onClick={() => router.push("/login")}
+          onClick={() => router.replace("/login")}
           className="flex justify-center items-center cursor-pointer py-1 mr-4 hover:bg-[#f69797b9] px-1 rounded-sm  text-sm" 
           title="Nhấn để đăng nhập"
         >

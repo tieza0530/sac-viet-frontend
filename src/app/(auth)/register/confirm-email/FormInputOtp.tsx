@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { fetchDeleteUser } from "./fetchDeleteUser";
 import { TbXboxXFilled } from "react-icons/tb";
 import { fetchConfirmEmail } from "./fetchConfirmEmail";
+import { useAuth } from "@/app/AuthContext";
+import { fetchResendOTP } from "./fetchResendOTP";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -30,6 +32,7 @@ export function InputOTPForm() {
   const [isResendDisabled, setIsResendDisabled] = useState(true);
   const [checkSatusOtp, setCheckSatusOtp] = useState(false);
   const [messageOTP, setMessageOTP] = useState("");
+  const { setAccessToken } = useAuth();
 
   useEffect(() => {
     if (counter > 0) {
@@ -60,18 +63,26 @@ export function InputOTPForm() {
       await fetchDeleteUser({ email, account });
       localStorage.removeItem("account");
       localStorage.removeItem("email");
+      localStorage.removeItem("accessToken");
       setCheckSatusOtp(true);
-    },300000);
-
+    }, 300000);
     try {
-      const res = await fetchConfirmEmail({account, email, data, controller});
-      if (res === 200) {
-        clearTimeout(timeoutId);
-        route.push("/");
-        route.refresh();
-      } else if (res === 400) {
-        setMessageOTP("OTP không đúng hoặc đã hết hạn");
+      const accessTokenRegis = localStorage.getItem('accessToken');
+      if(accessTokenRegis){
+        const res = await fetchConfirmEmail({account, email, data, accessTokenRegis, controller}) as  {status: number ,result: {accessToken: string , message: string}};
+  
+        if (res.status === 200) {
+          setAccessToken(res.result.accessToken)
+          clearTimeout(timeoutId);
+          route.push("/");
+          route.refresh();
+          localStorage.removeItem('accessToken')
+
+        } else if (res.status  === 400) {
+          setMessageOTP("OTP không đúng hoặc đã hết hạn");
+        }
       }
+      
     } catch (error) {
       console.error("Lỗi xác nhận email:", error);
     }
@@ -80,15 +91,7 @@ export function InputOTPForm() {
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
-    await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: localStorage.getItem("email")
-      })
-    })
+     await fetchResendOTP();
   };
   return (
     <div className="flex items-center justify-center w-full">

@@ -6,7 +6,8 @@ const userSchema  = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     token : {type: String},
-    authenticated: { type: Boolean }
+    authenticated: { type: Boolean },
+    role: {type: [String], enum: ["seller", "user"], default: "user" }
 }, {timestamps: true})
 
 userSchema.pre('save' , async function (next) {
@@ -15,5 +16,5 @@ userSchema.pre('save' , async function (next) {
     this.password = await bcrypt.hash(this.password , salt);
     next()
 })
-const User = mongoose.models.User || mongoose.model('User' , userSchema)
+const User = mongoose.models.users || mongoose.model('users' , userSchema)
 export default User

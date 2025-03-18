@@ -1,7 +1,8 @@
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
 export async function fetchForgetPassword({email  } : {email: string}) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/post/forget-password`, {
+        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/forget-password`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

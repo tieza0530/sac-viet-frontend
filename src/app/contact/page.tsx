@@ -1,3 +1,4 @@
+"use client"
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
 import { FormContact } from "./components/FormContact";

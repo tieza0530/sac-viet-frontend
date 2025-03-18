@@ -1,8 +1,9 @@
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Header } from "@/app/components/layout/header/Header";
-import { useMemo } from "react";
 import { Footer } from "./components/layout/footer/Footer";
+import { AuthProvider } from "@/app/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,15 +15,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   
-  const memoizedHeader = useMemo(() => <Header />, []);
-  const memoizedFooter = useMemo(() => <Footer />, [])
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen m-0">
-        {memoizedHeader }
+        <AuthProvider>
+        <Header />
         <div className="flex-1 bg-[#F2F2F2] flex items-center justify-center">{children}</div>
-        {memoizedFooter }
+        <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

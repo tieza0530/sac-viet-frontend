@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
+import { SECRET_KEY } from "@/app/helper/constant";
 
 export async function POST(req: NextRequest) {
   await connectDB();
-  const secretKey = process.env.JWT_SECRET as string;
   try {
     const { username, password } = await req.json();
     if (!username || !password) {
@@ -23,13 +23,15 @@ export async function POST(req: NextRequest) {
       const isMatch = await bcrypt.compare(password, checkUser.password);
       if (isMatch) {
         const refreshToken = jwt.sign(
-          { account: checkUser.account, phone: checkUser.phone },
-          secretKey,
+          { account: checkUser.account, email: checkUser.email },
+          SECRET_KEY,
           { expiresIn: "7d" }
-        );        
+        );     
+        const accessToken = jwt.sign({id: checkUser._id ,account: checkUser.account, email: checkUser.email } ,SECRET_KEY , { expiresIn: "15m"})   
         await User.findByIdAndUpdate(checkUser._id, {token: refreshToken})
         const response = NextResponse.json(
           {
+            accessToken,
             message: "Đăng nhập thành công!",
           },
           { status: 200, statusText: "Success" }

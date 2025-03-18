@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
+
 export const fetchDeleteUser = async ({
   email,
   account,
@@ -7,7 +9,7 @@ export const fetchDeleteUser = async ({
 }) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_LOCAL}/api/delete/user`,
+      `${NEXT_PUBLIC_LOCAL}/api/delete/user`,
       {
         method: "DELETE",
         headers: {

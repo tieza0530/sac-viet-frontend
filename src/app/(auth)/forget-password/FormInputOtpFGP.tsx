@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TbXboxXFilled } from "react-icons/tb";
 import { fetchConfirmForPass } from "./fetchConfirmForPass";
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -74,7 +75,7 @@ export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForg
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
-    await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
+    await fetch(`${NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +127,7 @@ export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForg
             <div className="text-sm mt-10">
               {counter > 0 ? (
                 <p>
-                  Chưa nhận được mã? Vui lòng chờ{" "}
+                  Chưa nhận được mã? Vui lòng chờ
                   <span className="font-bold">{counter}s</span>
                 </p>
               ) : (

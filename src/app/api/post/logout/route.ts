@@ -1,15 +1,26 @@
 import * as dotenv from "dotenv";
 import User from "@/app/config/models/User";
-import { connectDB } from "@/app/config/mongoose";
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
+import { SECRET_KEY } from "@/app/helper/constant";
 dotenv.config();
 
 
 export async function POST(req: NextRequest) {
-  await connectDB();
   try {
-    const { refreshToken } = await req.json();
-    const existed = await User.findOne({ refreshToken });
+    const { accessToken } = await req.json();    
+    if (!accessToken) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const decoded = jwt.verify(accessToken, SECRET_KEY) as { email: string; account: string };
+    
+    if(!decoded){
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const email = decoded.email
+    const existed = await User.findOne({ email });
+    
     if (!existed) {
         return NextResponse.json(
           {
@@ -26,6 +37,8 @@ export async function POST(req: NextRequest) {
         },
         { status: 200, statusText: "OK" }
       );
+    existed.token = ''
+    await existed.save()
     response.cookies.set('refreshToken', '', {
         path: '/',
         httpOnly: true,

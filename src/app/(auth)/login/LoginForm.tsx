@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { fetchLogin } from "./fetchLogin";
+import { useAuth } from "@/app/AuthContext";
+import { ShowPassword } from "@/app/helper/ShowPassword";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -27,8 +29,10 @@ const FormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-    const [messagePassword, setMessagePassword] = useState("");
-    const [messageAccount, setMessageAccount] = useState("");
+  const { setAccessToken } = useAuth();
+  const [messagePassword, setMessagePassword] = useState("");
+  const [messageAccount, setMessageAccount] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -40,20 +44,23 @@ export function LoginForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const res = await fetchLogin({data})
-      if (res === 200) {
+      const res = (await fetchLogin({ data })) as {
+        status: number;
+        result: { accessToken: string; message: string };
+      };
+      if (res.status === 200) {
+        setAccessToken(res.result.accessToken);
         localStorage.setItem("account", data.username);
         router.push("/");
         router.refresh();
-      }else if(res === 401){
-        setMessagePassword("Mật khẩu không đúng!")
-      }
-      else if(res === 404){
-        setMessageAccount("Tài khoảng không đúng!")
+      } else if (res.status === 401) {
+        setMessagePassword("Mật khẩu không đúng!");
+      } else if (res.status === 404) {
+        setMessageAccount("Tài khoảng không đúng!");
       }
       setTimeout(() => {
-        setMessageAccount('')
-        setMessagePassword('')
+        setMessageAccount("");
+        setMessagePassword("");
       }, 2000);
     } catch (error) {
       console.error("Error during fetch:", error);
@@ -78,7 +85,9 @@ export function LoginForm() {
                 />
               </FormControl>
               <FormMessage />
-              <p className="text-red-500 text-xs absolute -bottom-4 ml-1">{messageAccount}</p>
+              <p className="text-red-500 text-xs absolute -bottom-4 ml-1">
+                {messageAccount}
+              </p>
             </FormItem>
           )}
         />
@@ -88,17 +97,25 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem className="mt-4 relative">
               <FormLabel>Mật khẩu</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Mật khẩu"
-                  type="password"
-                  {...field}
-                  className="h-10"
-                  autoComplete="current-password"
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    placeholder="Mật khẩu"
+                    type={!showPassword ? "password" : "text"}
+                    {...field}
+                    className="h-10"
+                    autoComplete="current-password"
+                  />
+                </FormControl>
+                <ShowPassword
+                  setShowPassword={setShowPassword}
+                  showPassword={showPassword}
                 />
-              </FormControl>
+              </div>
               <FormMessage />
-              <p className="text-red-500 text-xs absolute -bottom-5 ml-1">{messagePassword}</p>
+              <p className="text-red-500 text-xs absolute -bottom-5 ml-1">
+                {messagePassword}
+              </p>
             </FormItem>
           )}
         />

@@ -1,10 +1,8 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
+import { CLIENT_ID, CLIENT_SECRET, EMAIL_ADMIN, REFRESH_TOKEN } from "../helper/constant";
 
-const CLIENT_ID = process.env.CLIENT_ID!;
-const CLIENT_SECRET = process.env.CLIENT_SECRET!;
 const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN!;
 
 export default async function sendEmail(to: string, subject: string, text: string) {
     try {
@@ -17,7 +15,7 @@ export default async function sendEmail(to: string, subject: string, text: strin
             service: "gmail",
             auth: {
                 type: "OAuth2",
-                user: process.env.EMAIL_USER,
+                user: EMAIL_ADMIN,
                 clientId: CLIENT_ID,
                 clientSecret: CLIENT_SECRET,
                 refreshToken: REFRESH_TOKEN,
@@ -26,7 +24,7 @@ export default async function sendEmail(to: string, subject: string, text: strin
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: EMAIL_ADMIN,
             to,
             subject,
             text,

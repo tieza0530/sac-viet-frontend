@@ -21,6 +21,7 @@ export default function Login() {
         <div className="mt-10">
           {!forgetPass ? <LoginForm /> : <ForgetPassword />}
           {!forgetPass && <p className="mt-10 text-sm font-medium cursor-pointer" onClick={()=> setForgetPass(true)}>Quên mật khẩu!</p>}
+          {forgetPass && <p className="mt-2 text-sm cursor-pointer font-medium" onClick={()=>  setForgetPass(false)}>Đăng nhập ngay!</p>}
           <p className="mt-2 text-sm">
             Bạn chưa có tài khoản ?
             <Button

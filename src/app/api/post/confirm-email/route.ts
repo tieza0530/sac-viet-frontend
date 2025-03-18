@@ -1,28 +1,33 @@
 import Otp from "@/app/config/models/Otp";
 import jwt from "jsonwebtoken";
 import User from "@/app/config/models/User";
-import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
+import { SECRET_KEY } from "@/app/helper/constant";
 
 export async function POST(req: NextRequest) {
-  await connectDB();
-  const secretKey = process.env.JWT_SECRET as string;
+  const { otp, email, account, accessTokenRegis } = await req.json();
   try {
-    const { otp, email, account } = await req.json();
+
     if (!email || !account || !otp) {
       return NextResponse.json(
         { message: "Thiếu thông tin email, tài khoản hoặc OTP!" },
         { status: 400 }
       );
     }
-    const checkOtp = await Otp.findOne({ email });
-    if (!checkOtp) {
+    if(!accessTokenRegis){
       return NextResponse.json(
-        { message: "OTP không đúng  hoặc đã hết hạn!" },
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+    const checkUserConfirm = await Otp.findOne({ accessTokenRegis });
+    if (!checkUserConfirm) {
+      return NextResponse.json(
+        { message: "OTP không đúng hoặc đã hết hạn!" },
         { status: 400 }
       );
     }
-    if (checkOtp.otp !== otp.pin) {
+    if (checkUserConfirm.otp !== otp.pin) {
       return NextResponse.json(
         { message: "OTP không hợp lệ!" },
         { status: 400 }
@@ -35,10 +40,11 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
     }
-    const accessToken = jwt.sign({ account, email, authenticated: true }, secretKey, {
-      expiresIn: "15m",
+    const id = findUser._id
+    const accessToken = jwt.sign({ id, account, email }, SECRET_KEY, {
+      expiresIn: "2m",
     });
-    const refreshToken = jwt.sign({ account, email, authenticated: true }, secretKey, {
+    const refreshToken = jwt.sign({id, account, email }, SECRET_KEY, {
       expiresIn: "7d",
     });
 
@@ -48,7 +54,7 @@ export async function POST(req: NextRequest) {
     await Otp.findOneAndDelete({email})
     const response = NextResponse.json(
       { accessToken, message: "Xác thực thành công!" },
-      { status: 200 }
+      { status: 200, statusText:"Success" }
     );
     response.headers.append(
       "Set-Cookie",
@@ -57,6 +63,8 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error) {
     console.error("Lỗi xác thực:", error);
+    await Otp.findOneAndDelete({email})
+    await User.findOneAndDelete({email})
     return NextResponse.json(
       { message: "Đã xảy ra lỗi", error },
       { status: 500 }

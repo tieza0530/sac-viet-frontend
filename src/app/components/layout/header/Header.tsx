@@ -2,12 +2,10 @@ import { RiFacebookFill } from "react-icons/ri";
 import { RiTiktokFill } from "react-icons/ri";
 import { FiInstagram } from "react-icons/fi";
 import { InfoUser } from "./InfoUser";
-import { FetchUser } from "@/app/utils/fetchUser";
 import { SidebarHeader } from "./SidebarHeader";
 
 
-export const Header = async () => {
-    const data = await FetchUser();    
+export const Header = async () => {      
   return (
     <div>
       <div className="bg-[#C95050] flex justify-around items-center py-1 text-white">
@@ -22,7 +20,7 @@ export const Header = async () => {
             3.000.000 VNĐ
           </p>
         </div>
-        <InfoUser data={data}/>
+        <InfoUser />
       </div>
       <SidebarHeader />
       <hr />

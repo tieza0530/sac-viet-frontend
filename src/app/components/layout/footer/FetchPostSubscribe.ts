@@ -1,7 +1,8 @@
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant"
 
 export const FetchPostSubscript = async ({data} :{ data: { inputEmail: string } }) =>{
     try {
-       const res =  await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/post/subscribe-email`, {
+       const res =  await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/subscribe-email`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

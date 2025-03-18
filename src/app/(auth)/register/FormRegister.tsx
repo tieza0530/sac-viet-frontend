@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { fetchPostRegister } from "./fetchPostRegister";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ShowPassword } from "@/app/helper/ShowPassword";
 
 const FormSchema = z
   .object({
@@ -30,10 +29,14 @@ const FormSchema = z
     path: ["againPassword"],
   });
 
-export function RegisterForm() {
-  const route = useRouter();
+export function RegisterForm({
+  setCheckRegistor,
+}: {
+  setCheckRegistor: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [messageEmail, setMessageEmail] = useState("");
   const [messageAccount, setMessageAccount] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -53,12 +56,12 @@ export function RegisterForm() {
       setMessageAccount("Tài khoản đã tồn tại.Vui lòng nhập lại!");
     }
     if (localStorage.getItem("account")) {
-      route.push("/register/confirm-email");
+      setCheckRegistor(true);
     }
-    setTimeout(() =>{
-      setMessageAccount('')
-      setMessageEmail('')
-    },2000)
+    setTimeout(() => {
+      setMessageAccount("");
+      setMessageEmail("");
+    }, 2000);
   }
 
   return (
@@ -77,8 +80,10 @@ export function RegisterForm() {
                   className="h-10"
                 />
               </FormControl>
-              <FormMessage className="absolute -bottom-4"/>
-              <p className="text-red-500 text-xs absolute -bottom-4">{messageAccount}</p>
+              <FormMessage className="absolute -bottom-4" />
+              <p className="text-red-500 text-xs absolute -bottom-4">
+                {messageAccount}
+              </p>
             </FormItem>
           )}
         />
@@ -96,8 +101,10 @@ export function RegisterForm() {
                   autoComplete="email"
                 />
               </FormControl>
-              <FormMessage className="absolute -bottom-4"/>
-              <p className="text-red-500 text-xs absolute -bottom-4">{messageEmail}</p>
+              <FormMessage className="absolute -bottom-4" />
+              <p className="text-red-500 text-xs absolute -bottom-4">
+                {messageEmail}
+              </p>
             </FormItem>
           )}
         />
@@ -107,15 +114,18 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Mật khẩu</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Mật khẩu"
-                  type="password"
-                  {...field}
-                  className="h-10"
-                  autoComplete="new-password"
-                />
-              </FormControl>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    placeholder="Mật khẩu"
+                    type={!showPassword ? "password" : "text"}
+                    {...field}
+                    className="h-10"
+                    autoComplete="new-password"
+                  />
+                </FormControl>
+                <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword}/>
+              </div>
               <FormMessage />
             </FormItem>
           )}
@@ -126,15 +136,19 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem className="mt-5">
               <FormLabel>Nhập lại mật khẩu</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Nhập lại mật khẩu"
-                  type="password"
-                  {...field}
-                  className="h-10"
-                  autoComplete="current-password"
-                />
-              </FormControl>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    placeholder="Nhập lại mật khẩu"
+                    type={!showPassword ? "password" : "text"}
+                    {...field}
+                    className="h-10"
+                    autoComplete="current-password"
+                  />
+                </FormControl>
+                <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword}/>
+              </div>
+
               <FormMessage />
             </FormItem>
           )}

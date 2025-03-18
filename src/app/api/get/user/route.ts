@@ -2,21 +2,21 @@ import User from "@/app/config/models/User";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/config/mongoose";
+import { SECRET_KEY } from "@/app/helper/constant";
 
 export async function GET(req: NextRequest) {
   await connectDB();
-  const refreshToken =
-    req.cookies.get("refreshToken")?.value || req.headers.get("refreshToken");
-  
-  if (!refreshToken) {
+
+const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  }  
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET as string);
-    
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, SECRET_KEY as string) as {email: string , account: string};
+
     if (decoded) {
-      const findUser = await User.findOne({ token: refreshToken }).select("-password -token");
-      
+      const findUser = await User.findOne({ email: decoded.email , account: decoded.account}).select("-password -token");
       if (!findUser) {
         return NextResponse.json({ error: "Invalid token" }, { status: 401 });
       }

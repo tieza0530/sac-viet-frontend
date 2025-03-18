@@ -1,14 +1,10 @@
 import Otp from "@/app/config/models/Otp";
-import { connectDB } from "@/app/config/mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  await connectDB();
-
+  const { email, otp } = await req.json();
   try {
-    const { email ,otp } = await req.json();
-      console.log("-----------------------------------------------------",email , otp);
-      
+
     const exitedUser = await Otp.findOne({ email });
     if (!exitedUser) {
       return NextResponse.json(
@@ -18,8 +14,8 @@ export async function POST(req: NextRequest) {
         { status: 400, statusText: "Invalid" }
       );
     }
-    if(exitedUser.otp === otp){
-         return NextResponse.json(
+    if (exitedUser.otp === otp) {
+      return NextResponse.json(
         {
           message: "Success",
         },
@@ -31,8 +27,10 @@ export async function POST(req: NextRequest) {
         message: "Quên mật khẩu thất bại!",
       },
       { status: 4001, statusText: "Invalid" }
-    );  } catch (error) {
+    );
+  } catch (error) {
     console.log(error);
+    await Otp.findByIdAndDelete({email})
     return NextResponse.json(
       {
         message: "Error",

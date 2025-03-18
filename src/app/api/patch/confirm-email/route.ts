@@ -16,11 +16,10 @@ export async function PATCH(req: NextRequest){
         if(!findUser){
             return NextResponse.json({message: "Confirm email finished!"}, {status: 404, statusText: "Invalid"})
         }
-        await sendEmail(email , "Xác nhận đăng ký ",`Chào bạn đến với Sắc Việt ! Đây là email xác nhận. Vui lòng không chia sẻ OTP với bất kì ai. Mã OTP của bạn là:  ${otp}` )
         findUser.otp = otp;
         findUser.createdAt = Date.now();
         await findUser.save();
-
+        await sendEmail(email , "Xác nhận đăng ký ",`Chào bạn đến với Sắc Việt ! Đây là email xác nhận. Vui lòng không chia sẻ OTP với bất kì ai. Mã OTP của bạn là:  ${otp}` )
         return NextResponse.json({
             message: "Send OTP again done!"
         }, {status: 200, statusText: "Success!"})

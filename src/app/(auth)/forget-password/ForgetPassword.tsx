@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -34,9 +33,7 @@ export function ForgetPassword() {
     if(res === 200){
       route.push('/forget-password')
       localStorage.setItem("email", data.email)
-    }
-    console.log(res);
-    
+    }    
   }
 
   return (
@@ -54,7 +51,7 @@ export function ForgetPassword() {
             </FormItem>
           )}
         />
-        <Button type="submit"   className="bg-[#C95050] text-white w-full mt-6 h-12 hover:bg-[#C95040]">Tiếp theo</Button>
+        <Button type="submit" className="bg-[#C95050] text-white w-full mt-6 h-12 hover:bg-[#C95040]">Tiếp theo</Button>
       </form>
     </Form>
   )

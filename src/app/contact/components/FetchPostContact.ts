@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
+
 export const FetchPostContact = async ({
   username,
   accountEmail,
@@ -9,7 +11,7 @@ export const FetchPostContact = async ({
   phone: string;
   message: string;
 }) => {
-  await fetch(`${process.env.NEXT_PUBLIC_LOCAL}/api/post/contact`, {
+  await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/contact`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

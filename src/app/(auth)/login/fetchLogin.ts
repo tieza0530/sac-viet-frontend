@@ -1,7 +1,9 @@
+import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
+
 export const fetchLogin = async ({ data }: { data: { password: string; username: string } }) => {
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_LOCAL}/api/post/login`,
+            `${NEXT_PUBLIC_LOCAL}/api/post/login`,
             {
               method: "POST",
               credentials: "include",
@@ -14,7 +16,8 @@ export const fetchLogin = async ({ data }: { data: { password: string; username:
               }),
             }
           );
-          return res.status
+          const result = await res.json()
+          return {status : res.status , result}
     } catch (error) {
         return error
     }
