@@ -1,5 +1,4 @@
 "use client";
-import { ApiResponse } from "@/app/components/type/user.type";
 import {
   HoverCard,
   HoverCardContent,
@@ -14,25 +13,27 @@ import { useAuth } from "@/app/AuthContext";
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
 export const InfoUser =  () => {
-const [data , setData ] = useState<ApiResponse | null>();
-const { accessToken ,setAccessToken } = useAuth();
+const { accessToken ,setAccessToken, setDataUser , dataUser} = useAuth();
+const [checkLogin, setCheckLogin] = useState(false);
+const router = useRouter();
 
   const getData = async() =>{
     const data = await FetchUser();
     if(data === null){
       return;
     }
-    setData(data)
+    if(dataUser === null){
+      setDataUser(data)    
+    }
+    return;
   }
   getData();
-  const [checkLogin, setCheckLogin] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    if (data && !checkLogin) {
+    if (dataUser && !checkLogin) {
       setCheckLogin(true);
     }
-  }, [data , checkLogin]);
+  }, [dataUser , checkLogin]);
   
   const handleLogout = async () => {
    const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/logout`, {
@@ -46,9 +47,8 @@ const { accessToken ,setAccessToken } = useAuth();
         setAccessToken(null);
         localStorage.removeItem("account");
         localStorage.removeItem("email");
+        await router.push('/')
         document.location.reload();
-        router.push('/')
-        router.refresh()
       }  
     };
   return (
@@ -57,17 +57,17 @@ const { accessToken ,setAccessToken } = useAuth();
       {!checkLogin ? (
         <span
           onClick={() => router.replace("/login")}
-          className="flex justify-center items-center cursor-pointer py-1 mr-4 hover:bg-[#f69797b9] px-1 rounded-sm  text-sm" 
+          className="flex justify-center items-center cursor-pointer py-1 hover:bg-[#f69797b9] px-1 rounded-sm  text-sm" 
           title="Nhấn để đăng nhập"
         >
           Đăng nhập <PiUserListLight className="p-0 text-2xl ml-1"/>
         </span>
       ) : (
-        <div className="flex justify-center items-center cursor-pointer py-1 mr-4">
+        <div className="flex justify-center items-center cursor-pointer py-1">
             <HoverCard>
               <HoverCardTrigger className="flex items-center justify-center">
                 <span className="text-sm font-medium mr-1">
-                  {data?.data.account}
+                  {localStorage.getItem('account')}
                 </span>
                 <PiUserListLight className="text-2xl ml-1" />
               </HoverCardTrigger>

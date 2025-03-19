@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import UserInfo from "./InfoUser"; 
 
 const userSchema  = new mongoose.Schema({
     account: { type: String, required: true, unique: true },
@@ -7,7 +8,8 @@ const userSchema  = new mongoose.Schema({
     password: { type: String, required: true },
     token : {type: String},
     authenticated: { type: Boolean },
-    role: {type: [String], enum: ["seller", "user"], default: "user" }
+    role: {type: [String], enum: ["seller", "user"], default: "user" },
+    info: { type: mongoose.Schema.Types.ObjectId, ref: "UserInfo" }
 }, {timestamps: true})
 
 userSchema.pre('save' , async function (next) {

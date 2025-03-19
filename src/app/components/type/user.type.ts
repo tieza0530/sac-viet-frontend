@@ -1,13 +1,18 @@
-type UserData = {
-  _id: string;
-  account: string;
-  phone: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+export type UserData = {
+  data: {
+    account: string, 
+    email: string,
+    authenticated: string,
+    role: [string],
+    info: infoUser
+  }
 };
 
-export type ApiResponse = {
-  data: UserData;
-  message: string;
-};
+export type infoUser = {
+  fullname: string,
+  phoneNumber: string,
+  address: [string],
+  avatar: string,
+  dateOfBirth: Date,
+  gender: string,
+}

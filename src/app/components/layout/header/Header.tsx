@@ -8,7 +8,7 @@ import { SidebarHeader } from "./SidebarHeader";
 export const Header = async () => {      
   return (
     <div>
-      <div className="bg-[#C95050] flex justify-around items-center py-1 text-white">
+      <div className="bg-[#C95050] flex justify-between items-center py-1 text-white px-20">
         <div className="flex ml-2 text-sm">
           <RiFacebookFill />
           <RiTiktokFill className="mx-2" />

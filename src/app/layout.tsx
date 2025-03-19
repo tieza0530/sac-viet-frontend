@@ -1,9 +1,8 @@
-
 import "./globals.css";
 import type { Metadata } from "next";
 import { Header } from "@/app/components/layout/header/Header";
 import { Footer } from "./components/layout/footer/Footer";
-import { AuthProvider } from "@/app/AuthContext";
+import { AuthProvider} from "@/app/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,17 +14,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
-  
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen m-0">
+      <body className="h-screen flex flex-col justify-between">
         <AuthProvider>
-        <Header />
-        <div className="flex-1 bg-[#F2F2F2] flex items-center justify-center">{children}</div>
-        <Footer />
+          <div>
+            <Header />
+          </div>
+          <div className=" bg-[#F2F2F2] h-full px-20 ">{children}</div>
+          <div>
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>
   );
-} 
+}

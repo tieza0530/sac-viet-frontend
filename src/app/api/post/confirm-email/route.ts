@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "@/app/config/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
+import InfoUser from "@/app/config/models/InfoUser";
 
 export async function POST(req: NextRequest) {
   const { otp, email, account, accessTokenRegis } = await req.json();
@@ -43,7 +44,10 @@ export async function POST(req: NextRequest) {
     const refreshToken = jwt.sign({ id, account, email }, SECRET_KEY, {
       expiresIn: "7d",
     });
-
+   const infoUser = await InfoUser.create({
+      user: id
+    })    
+    findUser.info = infoUser._id
     findUser.token = refreshToken;
     findUser.authenticated = true;
     await findUser.save();

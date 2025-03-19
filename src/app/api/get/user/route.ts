@@ -1,8 +1,9 @@
-import User from "@/app/config/models/User";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/config/mongoose";
 import { SECRET_KEY } from "@/app/helper/constant";
+import UserInfo from "@/app/config/models/InfoUser";
+import User from "@/app/config/models/User";
 
 export async function GET(req: NextRequest) {
   await connectDB();
@@ -13,16 +14,17 @@ const authHeader = req.headers.get("authorization");
   }  
   try {
     const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, SECRET_KEY as string) as {email: string , account: string};
-
+    const decoded = jwt.verify(token, SECRET_KEY as string) as {id: string, email: string , account: string};
+    
     if (decoded) {
-      const findUser = await User.findOne({ email: decoded.email , account: decoded.account}).select("-password -token");
+      const findUser = await User.findOne({ _id: decoded.id}).select("-password -token").populate("info");;
+
       if (!findUser) {
         return NextResponse.json({ error: "Invalid token" }, { status: 401 });
       }
       return NextResponse.json(
         {
-          data: findUser,
+          data: findUser, 
           message: "Success",
         },
         { status: 200, statusText: "Success" }

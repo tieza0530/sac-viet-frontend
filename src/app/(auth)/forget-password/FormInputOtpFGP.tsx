@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TbXboxXFilled } from "react-icons/tb";
 import { fetchConfirmForPass } from "./fetchConfirmForPass";
-import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
+import { fetchResendOTP } from "../register/confirm-email/fetchResendOTP";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -75,15 +75,7 @@ export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForg
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
-    await fetch(`${NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: localStorage.getItem("email")
-      })
-    })
+    await fetchResendOTP();
   };
   return (
     <div className="flex items-center justify-center w-full">

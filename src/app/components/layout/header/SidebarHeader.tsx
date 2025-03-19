@@ -10,7 +10,7 @@ export const SidebarHeader = () => {
       const router = useRouter();
     
     return(
-        <div className="flex py-4 items-center justify-around">
+        <div className="flex py-4 items-center justify-between px-20">
         <div>
           <Image src={logo} alt="logo" priority  />
         </div>

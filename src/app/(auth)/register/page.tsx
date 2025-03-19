@@ -10,7 +10,7 @@ import { InputOTPForm } from "./confirm-email/FormInputOtp";
 export default  function Register() {
   const [checkRegister , setCheckRegistor] = useState(false);
   return (
-    <div className="px-32 grid grid-cols-12">
+    <div className="px-32 grid grid-cols-12 h-full justify-center items-center">
       <div className="col-span-8 p-10">
         <ImageLR />
       </div>

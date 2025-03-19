@@ -7,7 +7,7 @@ import { FormChangePassword } from "./change-password/FormChangePassword";
 export default function ForgetPass() {
   const [checkConfirmForget,  setCheckConfirmForget] = useState(false)
   return (
-    <div className="px-32 grid grid-cols-12">
+    <div className="px-32 grid grid-cols-12 justify-center items-center h-full">
       <div className="col-span-8 p-10">
         <ImageLR />
       </div>
