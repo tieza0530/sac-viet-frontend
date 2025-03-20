@@ -11,7 +11,7 @@ export type UserData = {
 export type infoUser = {
   fullname: string,
   phoneNumber: string,
-  address: [string],
+  address: [{_id: string, address: string, phone:string}],
   avatar: string,
   dateOfBirth: Date,
   gender: string,

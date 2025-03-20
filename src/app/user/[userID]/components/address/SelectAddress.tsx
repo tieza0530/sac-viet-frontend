@@ -29,7 +29,7 @@ export function SelectFormAddress() {
   };
   return (
     <div>
-      {dataUser?.data.info.address.map((value, idx) => {
+      {dataUser?.data.info.address.map((value: {_id: string, address: string;  phone: string }, idx)  => {
         return (
           <div key={idx} className="relative">
             <p className="my-2 border py-2 px-2 rounded-sm">
