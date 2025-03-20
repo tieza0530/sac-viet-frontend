@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
   if (pathname === "/confirm-email"  &&  !cookieConfirm ) {
     return NextResponse.redirect(new URL('/not-found', req.url));
   }
-  if(pathname.startsWith("user") && !cookieCheckUser ){
+  if(pathname.startsWith("/user") && !cookieCheckUser ){
     return NextResponse.redirect(new URL('/not-found', req.url));
   }
 

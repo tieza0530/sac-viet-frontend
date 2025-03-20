@@ -48,7 +48,8 @@ const router = useRouter();
         localStorage.removeItem("account");
         localStorage.removeItem("email");
         await router.push('/')
-        document.location.reload();
+        setTimeout(() =>  document.location.reload(), 1000 )
+      
       }  
     };
   return (

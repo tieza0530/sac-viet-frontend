@@ -6,7 +6,7 @@ export const getNewAccessToken = async () => {
        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/refresh-token`, {
             method: "GET",
             headers: {
-                "Context-Type": "application/json"
+                "Content-Type": "application/json"
             },
         })
         const data = await res.json();

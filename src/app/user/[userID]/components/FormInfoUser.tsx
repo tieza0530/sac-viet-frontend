@@ -37,7 +37,10 @@ const FormSchema = z.object({
   account: z.string(),
   email: z.string(),
   fullname: z.string().max(100, "Tên không hợp lệ!"),
-  phoneNumber: z.string(),
+  phoneNumber: z.string().regex(
+    /^(0[3|5|7|8|9][0-9]{8}|(\+84)[3|5|7|8|9][0-9]{8})$/,
+    "Số điện thoại không hợp lệ"
+  ),
   gender: z.string(),
 });
 
@@ -46,6 +49,8 @@ export function InputFormInfoUser() {
   const [valueDob, setValueDob] = useState<Dayjs | null>(null);
   const [showAlert, setShowAlert] = useState(false);
   const [checkUpdate, setCheckUpdate] = useState(true);
+
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -62,11 +67,9 @@ export function InputFormInfoUser() {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        account: data.account,
-        email: data.email,
         fullname: data.fullname,
         phoneNumber: data.phoneNumber,
         dateOfBirth: valueDob,
@@ -211,7 +214,7 @@ export function InputFormInfoUser() {
                       defaultValue={field.value}
                       disabled={checkUpdate}
                     >
-                      <FormControl>
+                      <FormControl className="w-1/3">
                         <SelectTrigger>
                           <SelectValue
                             placeholder={genderChoose(
@@ -220,7 +223,7 @@ export function InputFormInfoUser() {
                           />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="w-full">
+                      <SelectContent >
                         <SelectItem value="male">Nam</SelectItem>
                         <SelectItem value="Female">Nữ</SelectItem>
                         <SelectItem value="Other">Khác</SelectItem>

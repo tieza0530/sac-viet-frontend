@@ -4,6 +4,8 @@ import NotFound from "@/app/not-found";
 import { useParams, useRouter } from "next/navigation";
 import { InputFormInfoUser } from "./components/FormInfoUser";
 import { cn } from "@/lib/utils";
+import { InputFormChangePass } from "./components/FormChangePass";
+import { FormUpdateAddress } from "./components/FormUpdateAddress";
 
 export default function Index() {
     const params = useParams()
@@ -26,9 +28,9 @@ export default function Index() {
               if(params.userID === "profile"){
                 return <InputFormInfoUser/>
               }else if(params.userID === 'address') {
-                return <h1>1231231</h1>
+                return <FormUpdateAddress/>
               }else if(params.userID === 'change-password'){
-              return <h1>213124245252</h1>
+              return <InputFormChangePass/>
               }else{
                 return NotFound()
               }
