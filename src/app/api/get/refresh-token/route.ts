@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-
     try {
         const refreshToken = req.cookies.get("refreshToken")?.value || req.headers.get("refreshToken");
     

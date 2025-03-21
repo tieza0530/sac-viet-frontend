@@ -11,7 +11,8 @@ export async function fetchForgetPassword({email  } : {email: string}) {
                 email: email
             })
            })    
-           return res.status
+           const accessToken = await res.json();
+           return {status: res.status, accessToken}
     } catch (error) {
         console.log(error);
         

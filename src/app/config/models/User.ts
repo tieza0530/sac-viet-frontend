@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import UserInfo from "./InfoUser"; 
 
 const userSchema  = new mongoose.Schema({
     account: { type: String, required: true, unique: true },

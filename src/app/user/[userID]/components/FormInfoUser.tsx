@@ -23,22 +23,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
+import { NEXT_PUBLIC_LOCAL, phoneRegex } from "@/app/helper/constant";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "dayjs/locale/vi";
 dayjs.locale("vi");
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
+import { ShowAlert } from "@/app/helper/ShowAlert";
 
 const FormSchema = z.object({
   account: z.string(),
   email: z.string(),
   fullname: z.string().max(100, "Tên không hợp lệ!"),
-  phoneNumber: z.string().regex(
-    /^(0[3|5|7|8|9][0-9]{8}|(\+84)[3|5|7|8|9][0-9]{8})$/,
+  phoneNumber: z.string().regex(phoneRegex,
     "Số điện thoại không hợp lệ"
   ),
   gender: z.string(),
@@ -261,13 +259,7 @@ export function InputFormInfoUser() {
                 Lưu
               </Button>
             )}
-            {showAlert &&(
-              <Alert className="absolute top-1/5 right-0 w-auto px-10 mr-1 bg-green-200/30 text-green-400/65 border-0">
-                <Terminal />
-                <AlertTitle>Cập nhật thành công!</AlertTitle>
-                <AlertDescription></AlertDescription>
-              </Alert>
-            )}
+            {showAlert && ShowAlert("Cập nhật thành công!")}
           </div>
         </form>
       </Form>

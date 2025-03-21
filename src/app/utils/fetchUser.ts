@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/app/AuthContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NEXT_PUBLIC_LOCAL } from "../helper/constant";
 import { getNewAccessToken } from "./getNewAccessToken";
 import { UserData } from "../components/type/user.type";
@@ -9,21 +9,14 @@ export const FetchUser = () => {
   const { accessToken, setAccessToken } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
 
-  const updateAccessToken = async () => {
+
+const updateAccessToken = useCallback(async () => {
     const newToken = await getNewAccessToken();
     if (newToken) {
       setAccessToken(newToken.data.accessToken);
       setTimeout(updateAccessToken, 14 * 60 * 1000);
     }
-    if (
-      newToken?.status === 401 ||
-      newToken?.status === 403 ||
-      newToken?.status === 500
-    ) {
-      localStorage.removeItem("account");
-      localStorage.removeItem("email");
-    }
-  };
+  }, [setAccessToken]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,6 +43,6 @@ export const FetchUser = () => {
       }
     };
     getUser();
-  }, [accessToken]);
+  }, [accessToken, updateAccessToken]);
   return user;
 };

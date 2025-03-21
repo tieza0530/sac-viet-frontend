@@ -26,7 +26,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function InputOTPForm() {
+export function InputOTPForm({confirmAccess}: {confirmAccess: string|undefined}) {
   const route = useRouter();
   const [counter, setCounter] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -51,38 +51,25 @@ export function InputOTPForm() {
   });
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const controller = new AbortController();
-    const email = localStorage.getItem("email");
-    const account = localStorage.getItem("account");
-  
-    if (!email || !account) {
-      setMessageOTP("Thiếu thông tin email hoặc tài khoản.");
-      return;
-    }
     const timeoutId = setTimeout(async () => {
       controller.abort();
-      await fetchDeleteUser({ email, account });
-      localStorage.removeItem("account");
-      localStorage.removeItem("email");
-      localStorage.removeItem("accessToken");
+      if(confirmAccess){
+        await fetchDeleteUser(confirmAccess);
+      }
       setCheckSatusOtp(true);
     }, 300000);
     try {
-      const accessTokenRegis = localStorage.getItem('accessToken');
-      if(accessTokenRegis){
-        const res = await fetchConfirmEmail({account, email, data, accessTokenRegis, controller}) as  {status: number ,result: {accessToken: string , message: string}};
-  
-        if (res.status === 200) {
-          setAccessToken(res.result.accessToken)
+      if(confirmAccess){
+        const res = await fetchConfirmEmail({inputOtp: data.pin, confirmAccess, controller})
+        if (res.status === 200 && res.data?.access_token) {
+          setAccessToken(res.data?.access_token)
           clearTimeout(timeoutId);
           route.push("/");
           route.refresh();
-          localStorage.removeItem('accessToken')
-
         } else if (res.status  === 400) {
           setMessageOTP("OTP không đúng hoặc đã hết hạn");
         }
       }
-      
     } catch (error) {
       console.error("Lỗi xác nhận email:", error);
     }
@@ -91,7 +78,9 @@ export function InputOTPForm() {
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
-     await fetchResendOTP();
+    if(confirmAccess){      
+      await fetchResendOTP(confirmAccess);
+    }
   };
   return (
     <div className="flex items-center justify-center w-full">

@@ -1,12 +1,25 @@
 import User from "@/app/config/models/User";
-import { connectDB } from "@/app/config/mongoose";
+import { SECRET_KEY } from "@/app/helper/constant";
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: NextRequest) {
-    await connectDB();
+export async function PATCH(req: NextRequest) {    
+    const authHeader = req.headers.get('authorization')
     try {
-        const {email , password} = await req.json();
-        const findUser = await User.findOne({email})
+        if(!authHeader || !authHeader.startsWith("Bearer")){
+            return NextResponse.json({
+                message: "Unauthorization"
+            },{status: 401})
+        }
+        const token = authHeader.split(" ")[1]
+        const decoded = jwt.verify(token, SECRET_KEY) as {email: string}
+        if(!decoded){
+            return NextResponse.json({
+                message: "Unauthorization"
+            },{status: 401})
+        }
+        const {password} = await req.json();
+        const findUser = await User.findOne({email : decoded.email})
 
         if(!findUser){
             return NextResponse.json({

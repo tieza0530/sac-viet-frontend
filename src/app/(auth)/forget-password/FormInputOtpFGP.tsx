@@ -24,7 +24,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForget: React.Dispatch<React.SetStateAction<boolean>>}) {
+export function InputOTPFormForget({ setCheckConfirmForget, confirmToken }: { setCheckConfirmForget: React.Dispatch<React.SetStateAction<boolean>>, confirmToken: string }) {
   const route = useRouter();
   const [counter, setCounter] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -48,34 +48,30 @@ export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForg
   });
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const controller = new AbortController();
-    const email = localStorage.getItem("email");
-    if(!email){
-      return console.log('Email không tồn tại');
-      
-    }
     const timeoutId = setTimeout(async () => {
       controller.abort();
-      localStorage.removeItem("email");
       setCheckSatusOtp(true);
-    },300000);
+    }, 300000);
 
     try {
-      const res = await fetchConfirmForPass({data , email ,controller });
-      if (res === 200) {
-        clearTimeout(timeoutId);
-        setCheckConfirmForget(true);
-      } else if (res === 400) {
-        setMessageOTP("OTP không đúng hoặc đã hết hạn");
+      if (confirmToken) {
+        const res = await fetchConfirmForPass({ data, confirmToken, controller });
+        if (res === 200) {
+          clearTimeout(timeoutId);
+          setCheckConfirmForget(true);
+        } else if (res === 400) {
+          setMessageOTP("OTP không đúng!");
+        }
       }
     } catch (error) {
       console.error("Lỗi xác nhận email:", error);
     }
   }
-  
+
   const handleResendOtp = async () => {
     setCounter(60);
     setIsResendDisabled(true);
-    await fetchResendOTP();
+    await fetchResendOTP(confirmToken);
   };
   return (
     <div className="flex items-center justify-center w-full">
@@ -120,7 +116,7 @@ export function InputOTPFormForget({setCheckConfirmForget}: {setCheckConfirmForg
               {counter > 0 ? (
                 <p>
                   Chưa nhận được mã? Vui lòng chờ
-                  <span className="font-bold">{counter}s</span>
+                  <span className="font-bold ml-1">{counter}s</span>
                 </p>
               ) : (
                 <div>

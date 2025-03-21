@@ -11,16 +11,21 @@ export const FetchPostContact = async ({
   phone: string;
   message: string;
 }) => {
-  await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/contact`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: username,
-      email: accountEmail,
-      phone: phone,
-      message: message,
-    }),
-  });
+  try {
+    const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/contact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: username,
+        email: accountEmail,
+        phone: phone,
+        message: message,
+      }),
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
 };

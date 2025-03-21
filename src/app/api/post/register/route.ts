@@ -12,8 +12,8 @@ dotenv.config();
 export async function POST(req: NextRequest) {
   await connectDB();
   const otp = generateOtp();
+  const { account, password, email } = await req.json();
   try {
-    const { account, password, email } = await req.json();
     const existingAccount = await User.findOne({ account });
     const existingEmail = await User.findOne({ email });
 
@@ -26,16 +26,16 @@ export async function POST(req: NextRequest) {
     if (existingAccount) {
       return NextResponse.json(
         { message: "Account already exists!" },
-        { status: 400 }
+        { status: 401 }
       );
     }
-    const accessToken = jwt.sign({ account, email }, SECRET_KEY, {
+    const confirm_access = jwt.sign({ account, email }, SECRET_KEY, {
       expiresIn: "5m",
     });
     await Otp.create({
       email,
       otp,
-      accessTokenRegis: accessToken,
+      accessTokenRegis: confirm_access,
     });
     await User.create({
       account,
@@ -50,18 +50,19 @@ export async function POST(req: NextRequest) {
     );
     const response = NextResponse.json(
       {
-        accessToken,
+        confirm_access,
         message: "Success",
       },
       { status: 200 }
     );
     response.headers.append(
       "Set-Cookie",
-      `confirm_access=${accessToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=300`
+      `confirm_access=${confirm_access}; Path=/; HttpOnly; SameSite=Lax; Max-Age=300`
     );
     return response;
   } catch (error) {
     console.error(error);
+     await User.findByIdAndDelete({ email });
     return NextResponse.json(
       {
         message: "An error occurred, please try again later!",

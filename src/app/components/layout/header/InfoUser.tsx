@@ -40,16 +40,13 @@ const router = useRouter();
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`
         },
-        body: JSON.stringify({ accessToken }),
       });
       if(res.status === 200){
         setAccessToken(null);
-        localStorage.removeItem("account");
-        localStorage.removeItem("email");
-        await router.push('/')
+        router.push('/')
         setTimeout(() =>  document.location.reload(), 1000 )
-      
       }  
     };
   return (
@@ -58,7 +55,7 @@ const router = useRouter();
       {!checkLogin ? (
         <span
           onClick={() => router.replace("/login")}
-          className="flex justify-center items-center cursor-pointer py-1 hover:bg-[#f69797b9] px-1 rounded-sm  text-sm" 
+          className="flex justify-center items-center cursor-pointer py-1 px-1 rounded-sm  text-sm hover:bg-[#e4d5b2] " 
           title="Nhấn để đăng nhập"
         >
           Đăng nhập <PiUserListLight className="p-0 text-2xl ml-1"/>
@@ -66,9 +63,9 @@ const router = useRouter();
       ) : (
         <div className="flex justify-center items-center cursor-pointer py-1">
             <HoverCard>
-              <HoverCardTrigger className="flex items-center justify-center">
+              <HoverCardTrigger className="flex items-center justify-center" >
                 <span className="text-sm font-medium mr-1">
-                  {localStorage.getItem('account')}
+                  {dataUser?.data.info.fullname || dataUser?.data.account}
                 </span>
                 <PiUserListLight className="text-2xl ml-1" />
               </HoverCardTrigger>

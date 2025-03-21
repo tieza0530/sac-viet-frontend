@@ -19,10 +19,10 @@ import { ShowPassword } from "@/app/helper/ShowPassword";
 
 const FormSchema = z
   .object({
-    username: z.string().min(2),
+    username: z.string().min(2, "Tài khoản phải nhiều hơn 2 kí tự!"),
     email: z.string().trim().email(),
-    password: z.string().min(6),
-    againPassword: z.string().min(6),
+    password: z.string().min(6, "Mật khẩu ít nhất 6 kí tự!"),
+    againPassword: z.string().min(6, "Mật khẩu ít nhất 6 kí tự!"),
   })
   .refine((data) => data.password === data.againPassword, {
     message: "Mật khẩu nhập lại không khớp!",
@@ -31,8 +31,10 @@ const FormSchema = z
 
 export function RegisterForm({
   setCheckRegistor,
+  setConfiremAccess,
 }: {
   setCheckRegistor: React.Dispatch<React.SetStateAction<boolean>>;
+  setConfiremAccess: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) {
   const [messageEmail, setMessageEmail] = useState("");
   const [messageAccount, setMessageAccount] = useState("");
@@ -49,14 +51,14 @@ export function RegisterForm({
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const res = await fetchPostRegister(data);
-    if (res === 400) {
-      setMessageEmail("Email đã tồn tại.Vui lòng nhập lại!");
-    } else if (res === 401) {
-      setMessageAccount("Tài khoản đã tồn tại.Vui lòng nhập lại!");
-    }
-    if (localStorage.getItem("account")) {
+    const response = await fetchPostRegister(data);
+    if (response.status === 200) {
+      setConfiremAccess(response.data?.confirm_access);
       setCheckRegistor(true);
+    } else if (response.status === 400) {
+      setMessageEmail("Email đã tồn tại.Vui lòng nhập lại!");
+    } else if (response.status === 401) {
+      setMessageAccount("Tài khoản đã tồn tại.Vui lòng nhập lại!");
     }
     setTimeout(() => {
       setMessageAccount("");
@@ -124,9 +126,14 @@ export function RegisterForm({
                     autoComplete="new-password"
                   />
                 </FormControl>
-                <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword}/>
+                <ShowPassword
+                  setShowPassword={setShowPassword}
+                  showPassword={showPassword}
+                />
               </div>
-              <FormMessage />
+              <div className="h-1">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -146,10 +153,14 @@ export function RegisterForm({
                     autoComplete="current-password"
                   />
                 </FormControl>
-                <ShowPassword setShowPassword={setShowPassword} showPassword={showPassword}/>
+                <ShowPassword
+                  setShowPassword={setShowPassword}
+                  showPassword={showPassword}
+                />
               </div>
-
-              <FormMessage />
+              <div className="h-1">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />

@@ -39,7 +39,7 @@ export function InputSearch() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Bạn đang tìm kiếm sản phẩm nào ?" {...field} className="w-96" />
+                <Input placeholder="Bạn đang tìm kiếm sản phẩm nào ?" {...field} className="2xl:w-80" />
               </FormControl>
             </FormItem>
           )}

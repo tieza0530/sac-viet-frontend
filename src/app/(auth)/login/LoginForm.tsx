@@ -11,7 +11,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -21,9 +20,7 @@ import { useAuth } from "@/app/AuthContext";
 import { ShowPassword } from "@/app/helper/ShowPassword";
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  username: z.string(),
   password: z.string(),
 });
 
@@ -44,13 +41,9 @@ export function LoginForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const res = (await fetchLogin({ data })) as {
-        status: number;
-        result: { accessToken: string; message: string };
-      };
-      if (res.status === 200) {
-        setAccessToken(res.result.accessToken);
-        localStorage.setItem("account", data.username);
+      const res = await fetchLogin({password: data.password, username: data.username})
+      if (res.status === 200 && res.data?.access_token) {
+        setAccessToken(res.data?.access_token);
         router.push("/");
         router.refresh();
       } else if (res.status === 401) {
@@ -84,10 +77,11 @@ export function LoginForm() {
                   autoComplete="username"
                 />
               </FormControl>
-              <FormMessage />
-              <p className="text-red-500 text-xs absolute -bottom-4 ml-1">
+              <div className="h-1">
+              <p className="text-red-500 text-xs absolute -bottom-3">
                 {messageAccount}
               </p>
+              </div>
             </FormItem>
           )}
         />
@@ -112,10 +106,11 @@ export function LoginForm() {
                   showPassword={showPassword}
                 />
               </div>
-              <FormMessage />
-              <p className="text-red-500 text-xs absolute -bottom-5 ml-1">
+              <div className="h-1">
+              <p className="text-red-500 text-xs absolute -bottom-3">
                 {messagePassword}
               </p>
+              </div>
             </FormItem>
           )}
         />

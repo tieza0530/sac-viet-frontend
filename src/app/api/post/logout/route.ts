@@ -7,12 +7,12 @@ dotenv.config();
 
 export async function POST(req: NextRequest) {
   try {
-    const { accessToken } = await req.json();
-    if (!accessToken) {
+    const authHeader = req.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith("Bearer")) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-
-    const decoded = jwt.verify(accessToken, SECRET_KEY) as {
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token, SECRET_KEY) as {
       email: string;
       account: string;
     };

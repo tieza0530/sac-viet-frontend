@@ -1,3 +1,4 @@
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,13 +13,13 @@ export const BreadCrumb = () => {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">Trang chủ</Link>
+            <Link href="/"  className="text-black">Trang chủ</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/contact" className="font-medium">
+            <Link href="/contact" className="font-medium text-black">
               Liên hệ
             </Link>
           </BreadcrumbLink>

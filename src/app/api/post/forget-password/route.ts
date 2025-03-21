@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     await Otp.findOneAndDelete({ email });
     const sendOtp = new Otp({ email: email, otp: otp });
     await sendOtp.save();
-    const accessToken = jwt.sign({ email }, SECRET_KEY, {
+    const confirm_access = jwt.sign({ email }, SECRET_KEY, {
       expiresIn: "5m",
     });
     await sendEmail(
@@ -36,14 +36,14 @@ export async function POST(req: NextRequest) {
     );
     const response = NextResponse.json(
       {
-        accessToken,
+        confirm_access,
         message: "Success",
       },
       { status: 200 }
     );
     response.headers.append(
       "Set-Cookie",
-      `confirm_access=${accessToken}; Path=/; HttpOnly; SameSite=Lax; Max-Age=300`
+      `confirm_access=${confirm_access}; Path=/; HttpOnly; SameSite=Lax; Max-Age=300`
     );
     return response;
   } catch (error) {

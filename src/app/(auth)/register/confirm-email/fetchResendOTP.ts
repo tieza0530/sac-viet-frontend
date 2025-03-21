@@ -1,15 +1,15 @@
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
-export const fetchResendOTP = async () => {
+export const fetchResendOTP = async (confirmAccess: string) => {
+  console.log(confirmAccess);
+  
   try {
     await fetch(`${NEXT_PUBLIC_LOCAL}/api/patch/confirm-email`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${confirmAccess}`
       },
-      body: JSON.stringify({
-        email: localStorage.getItem("email"),
-      }),
     });
   } catch (error) {
     console.log(error);

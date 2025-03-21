@@ -1,6 +1,7 @@
+import { RegisterSuccessResponse } from "@/app/components/type/result.type";
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 
-export const fetchLogin = async ({ data }: { data: { password: string; username: string } }) => {
+export const fetchLogin = async ({  password, username  }: { password: string; username: string }):Promise<RegisterSuccessResponse> => {
     try {
         const res = await fetch(
             `${NEXT_PUBLIC_LOCAL}/api/post/login`,
@@ -11,14 +12,18 @@ export const fetchLogin = async ({ data }: { data: { password: string; username:
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                username: data.username.trim(),
-                password: data.password,
+                username: username.trim(),
+                password: password,
               }),
             }
           );
-          const result = await res.json()
-          return {status : res.status , result}
+          const data = await res.json()
+          return {status : res.status , data}
     } catch (error) {
-        return error
+        return  {
+          status: 500,
+          error:
+            error instanceof Error ? error.message : "An unknown error occurred",
+        };
     }
 }

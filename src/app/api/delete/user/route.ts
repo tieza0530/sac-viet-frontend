@@ -1,25 +1,26 @@
 import Otp from "@/app/config/models/Otp";
 import User from "@/app/config/models/User";
-import { connectDB } from "@/app/config/mongoose";
+import { SECRET_KEY } from "@/app/helper/constant";
+import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
-  await connectDB();
   try {
-    const { email, account } = await req.json();
-    if (!email || !account) {
+    const authHeader = req.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith("Bearer")) {
       return NextResponse.json(
-        { message: "Missing email or account!" },
-        { status: 400 }
+        { message: "Unauthorization!" },
+        { status: 401 }
       );
     }
-
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token , SECRET_KEY) as {email: string , account: string}
     const findUser = await User.findOneAndDelete({
-      email,
-      account,
+      email: decoded.email,
+      account: decoded.email,
       authenticated: false,
     });
-    const findUserOTP = await Otp.findOneAndDelete({ email });
+    const findUserOTP = await Otp.findOneAndDelete({ email: decoded.email });
 
     if (!findUser && !findUserOTP) {
       return NextResponse.json({ message: "NotFound !" }, { status: 404 });

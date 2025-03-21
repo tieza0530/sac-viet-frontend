@@ -1,11 +1,9 @@
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/app/config/mongoose";
 import { SECRET_KEY } from "@/app/helper/constant";
 import User from "@/app/config/models/User";
 
 export async function GET(req: NextRequest) {
-  await connectDB();
 const authHeader = req.headers.get("authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

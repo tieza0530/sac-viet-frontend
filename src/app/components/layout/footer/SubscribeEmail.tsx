@@ -14,23 +14,34 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { FetchPostSubscript } from "./FetchPostSubscribe"
+import { useState } from "react"
+import { ShowAlert } from "@/app/helper/ShowAlert"
 
 const FormSchema = z.object({
   inputEmail: z.string().toLowerCase().trim().email("Email không hợp lệ!!")
 })
 
 export function SubscribeEmail() {
+  const [showAlert, setShowAlert] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-        inputEmail: "",
+      inputEmail: "",
     },
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    FetchPostSubscript({data})
+    const res = await FetchPostSubscript({ data })
+    if (res === 200) {
+      setShowAlert(true)
+      setTimeout(() => setShowAlert(false), 2000)
+      form.reset({
+        inputEmail: "",
+      })
+    }
+
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-72 relative">
@@ -42,15 +53,18 @@ export function SubscribeEmail() {
               <FormControl className="relative ">
                 <Input placeholder="Đăng ký ngay" {...field} className="bg-white" />
               </FormControl>
-              <FormMessage  />
+              <div className="h-2">
+                <FormMessage />
+              </div>
               <FormDescription>
-              Chúng tôi sẽ gửi cập nhật những tin khuyến mãi & báo giá mới nhất đến bạn!
-            </FormDescription>
+                Chúng tôi sẽ gửi cập nhật những tin khuyến mãi & báo giá mới nhất đến bạn!
+              </FormDescription>
             </FormItem>
           )}
         />
-        <Button type="submit" className="absolute top-0 right-0 bg-black text-white ">Đăng ký</Button>
+        <Button type="submit" className="absolute top-0 right-0 bg-[var(--color-button)] hover:bg-[var(--color-hover-button)] text-white ">Đăng ký</Button>
       </form>
+      {showAlert && ShowAlert('Đăng ký thành công!')}
 
     </Form>
   )

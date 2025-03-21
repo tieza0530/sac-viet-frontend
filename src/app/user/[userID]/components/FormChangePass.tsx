@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,14 +18,13 @@ import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 import { useAuth } from "@/app/AuthContext";
 import { useState } from "react";
 import { ShowPassword } from "@/app/helper/ShowPassword";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
+import { ShowAlert } from "@/app/helper/ShowAlert";
 
 const FormSchema = z
   .object({
-    password: z.string().min(6),
-    newPassword: z.string().min(6),
-    newPasswordAgain: z.string().min(6),
+    password: z.string(),
+    newPassword: z.string().min(6, 'mật khẩu phải dài 6 ký tự trở lên.'),
+    newPasswordAgain: z.string().min(6 , 'mật khẩu phải dài 6 ký tự trở lên.'),
   })
   .refine((data) => data.newPassword === data.newPasswordAgain, {
     message: "Mật khẩu nhập lại không khớp!",
@@ -72,12 +70,12 @@ export function InputFormChangePass() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col justify-center items-center">
       <p className="text-2xl mb-10 font-medium">Thay đổi mật khẩu</p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
+          className="w-2/3"
         >
           <FormField
             control={form.control}
@@ -98,9 +96,9 @@ export function InputFormChangePass() {
                     showPassword={showPasswordOLD}
                   />
                 </div>
-
-                <FormDescription></FormDescription>
+                <div className="h-2 mb-2">
                 <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -123,9 +121,10 @@ export function InputFormChangePass() {
                     showPassword={showPassword}
                   />
                 </div>
-                <FormDescription></FormDescription>
+                <div className="h-2 mb-2">
                 <FormMessage />
-              </FormItem>
+                </div>
+                </FormItem>
             )}
           />
           <FormField
@@ -147,27 +146,24 @@ export function InputFormChangePass() {
                     showPassword={showPassword}
                   />
                 </div>
-                <FormDescription></FormDescription>
+                <div className="h-2">
                 <FormMessage />
+                </div>
               </FormItem>
             )}
           />
           <p className="text-red-500 text-xs h-5 m-0">{showMess}</p>
+          <div className="w-full flex justify-end">
           <Button
             type="submit"
-            className=""
+            className="bg-[var(--color-button)] hover:bg-[var(--color-hover-button)"
           >
             Thay đổi
           </Button>
-          {showAlert && (
-            <Alert className="absolute top-1/5 right-0 w-auto px-10 mr-1 bg-green-200/30 text-green-400/65 border-0">
-              <Terminal />
-              <AlertTitle>Cập nhật thành công!</AlertTitle>
-              <AlertDescription></AlertDescription>
-            </Alert>
-          )}
+          </div>
+          {showAlert && ShowAlert("Đổi mật khẩu thành công!") }
         </form>
-      </Form>
+      </Form> 
     </div>
   );
 }
