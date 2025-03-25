@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken";
 import User from "@/app/config/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
-import InfoUser from "@/app/config/models/InfoUser";
+import Card from "@/app/config/models/Card";
+import UserAddress from "@/app/config/models/UserAddress";
+import Order from "@/app/config/models/Order";
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
@@ -55,10 +57,19 @@ export async function POST(req: NextRequest) {
         expiresIn: "7d",
       }
     );
-    const infoUser = await InfoUser.create({
+    const card = await Card.create({
       user: id,
     });
-    findUser.info = infoUser._id;
+    const userAddress = await UserAddress.create({
+      user: id,
+    });
+    const order = await Order.create({
+      user: id,
+    });
+    findUser.card = card._id;
+    findUser.user_address = userAddress._id;
+    findUser.ordered = order._id;
+
     findUser.token = refreshToken;
     findUser.authenticated = true;
     await findUser.save();

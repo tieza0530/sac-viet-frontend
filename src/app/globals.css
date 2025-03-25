@@ -9,6 +9,7 @@
   --color-hover-button: #C95040;
   --color-text-root: #8B5A2B;
   --color-background-main: #EAE0C8;
+  --color-bg-body : #eae0c844;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -123,8 +124,8 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
+  /* body {
     @apply bg-background text-foreground;
-  }
+  } */
 }
 

@@ -1,4 +1,3 @@
-import UserInfo from "@/app/config/models/InfoUser";
 import User from "@/app/config/models/User";
 import { SECRET_KEY } from "@/app/helper/constant";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,8 +13,9 @@ export async function PATCH(req: NextRequest) {
     const decoded = jwt.verify(token, SECRET_KEY as string) as {id: string, email: string , account: string};
     
     const {fullname, phoneNumber, dateOfBirth , gender} = await req.json();
-  
-    const UpdateinfoUser = await UserInfo.findOne({user: decoded.id});
+
+    const UpdateinfoUser = await User.findOne({_id: decoded.id}).select("-password -token");
+    console.log(UpdateinfoUser);
 
     if (!UpdateinfoUser) {
         return NextResponse.json({ message: "Không tìm thấy thông tin user!" }, { status: 404 });
@@ -23,12 +23,11 @@ export async function PATCH(req: NextRequest) {
 
     UpdateinfoUser.fullname = fullname;
     UpdateinfoUser.phoneNumber = phoneNumber;
-    UpdateinfoUser.dateOfBirth = dateOfBirth;
+    UpdateinfoUser.date_of_birth = dateOfBirth;
     UpdateinfoUser.gender = gender;
 
     await UpdateinfoUser.save();
-
-    const data = await User.findOne({ _id: decoded.id }).select("-password -token").populate("info");      
+    const data = UpdateinfoUser
     
     return NextResponse.json({ message: "Cập nhật thành công!", data });
 

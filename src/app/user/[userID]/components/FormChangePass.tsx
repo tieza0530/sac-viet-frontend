@@ -78,6 +78,7 @@ export function InputFormChangePass() {
           className="w-2/3"
         >
           <FormField
+          
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -88,6 +89,8 @@ export function InputFormChangePass() {
                     <Input
                       type={!showPasswordOLD ? "password" : "text"}
                       placeholder="mật khẩu cũ"
+                      autoComplete="old-password" 
+
                       {...field}
                     />
                   </FormControl>
@@ -114,6 +117,7 @@ export function InputFormChangePass() {
                       type={!showPassword ? "password" : "text"}
                       placeholder="nhập mật khẩu mới"
                       {...field}
+                      autoComplete="new-password" 
                     />
                   </FormControl>
                   <ShowPassword
@@ -138,6 +142,7 @@ export function InputFormChangePass() {
                     <Input
                       type={!showPassword ? "password" : "text"}
                       placeholder="nhập lại mật khẩu"
+                      autoComplete="new-password-again" 
                       {...field}
                     />
                   </FormControl>

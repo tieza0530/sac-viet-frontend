@@ -13,10 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="h-screen flex flex-col justify-between">
+    <html lang="en" >
+      <body className="">
         <AuthProvider>
-          <div className=" bg-[var(--color-background-main)] h-full ">{children}</div>
+           <main className="w-full pt-20"> {children}</main>
         </AuthProvider>
       </body>
     </html>

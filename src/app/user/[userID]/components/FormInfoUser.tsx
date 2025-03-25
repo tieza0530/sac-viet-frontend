@@ -86,7 +86,7 @@ export function InputFormInfoUser() {
   }
   useEffect(() => {
     if (dataUser) {
-      const date = new Date(dataUser?.data.info.dateOfBirth);
+      const date = new Date(dataUser?.data.date_of_birth);
       if (date) {
         const dateValue: Dayjs = dayjs(date);
         setValueDob(dateValue);
@@ -94,9 +94,9 @@ export function InputFormInfoUser() {
       form.reset({
         account: dataUser.data.account,
         email: dataUser.data.email,
-        fullname: dataUser.data.info.fullname,
-        phoneNumber: dataUser.data.info.phoneNumber,
-        gender: dataUser.data.info.gender,
+        fullname: dataUser.data.fullname,
+        phoneNumber: dataUser.data.phoneNumber,
+        gender: dataUser.data.gender,
       });
     }
   }, [dataUser, checkUpdate ,form]);
@@ -216,7 +216,7 @@ export function InputFormInfoUser() {
                         <SelectTrigger>
                           <SelectValue
                             placeholder={genderChoose(
-                              dataUser?.data.info.gender
+                              dataUser?.data.gender
                             )}
                           />
                         </SelectTrigger>

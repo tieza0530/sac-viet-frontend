@@ -8,7 +8,7 @@ import { SidebarHeader } from "./SidebarHeader";
 
 export const Header = () => {
   return (
-    <div>
+    <div className="fixed w-full z-999">
       <div className="bg-[var(--color-background-main)]">
         <div className="2xl:px-80 flex justify-between items-center text-[var(--color-text-root)]">
           <div className="flex ml-2 text-sm">

@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { NEXT_PUBLIC_LOCAL, phoneRegex } from "@/app/helper/constant"
 import { useAuth } from "@/app/AuthContext"
-import { useState } from "react"
+import React, { useState } from "react"
 import { ShowAlert } from "@/app/helper/ShowAlert"
 
 const FormSchema = z.object({
@@ -25,9 +25,10 @@ const FormSchema = z.object({
   phone: z.string().regex(
     phoneRegex, "Số điện thoại không hợp lệ"
   ),
+  name: z.string().min(1),
 })
 
-export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
+export function InputFormDetail({ valueCommune, setOpen}: { valueCommune: string, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { accessToken, setDataUser } = useAuth();
   const [showAlert, setShowAlert] = useState(false)
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -35,6 +36,7 @@ export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
     defaultValues: {
       detail: "",
       phone: "",
+      name:"",
     },
   })
 
@@ -47,7 +49,8 @@ export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
       },
       body: JSON.stringify({
         address: data.detail + ", " + valueCommune,
-        phone: data.phone
+        phone: data.phone,
+        name: data.name
       }),
     });
 
@@ -55,10 +58,13 @@ export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
       const data = await res.json();
       setDataUser(data);
       setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 2000)
+      setTimeout(() => {
+        setShowAlert(false)
+        setOpen(false)
+      }, 2000)  
     }
   }
-
+  
   return (
     <div className="w-full">
       <Form {...form}>
@@ -78,11 +84,27 @@ export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
               </FormItem>
             )}
           />
+        <div className="flex justify-between">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="mt-2 w-1/2 mr-10">
+                <FormLabel>Tên người nhận</FormLabel>
+                <FormControl>
+                  <Input placeholder="nhập tên người nhận" {...field} disabled={valueCommune === ''} />
+                </FormControl>
+                <FormDescription>
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="phone"
             render={({ field }) => (
-              <FormItem className="mt-2 w-1/3">
+              <FormItem className="mt-2 w-1/2">
                 <FormLabel>Số điện thoại</FormLabel>
                 <FormControl>
                   <Input placeholder="nhập số điện thoại" {...field} disabled={valueCommune === ''} />
@@ -93,11 +115,12 @@ export function InputFormDetail({ valueCommune }: { valueCommune: string }) {
               </FormItem>
             )}
           />
-          <div>
-            <Button type="submit" className="bg-[#C95050] text-white hover:bg-[#c9505098] mt-10" disabled={valueCommune === ''}>Cập nhật</Button>
-            {showAlert && ShowAlert("Cập nhập thành công!")
-            }
           </div>
+          <div className="flex justify-end">
+            <Button type="submit" className="bg-[#C95050] text-white hover:bg-[#c9505098] mt-10" disabled={valueCommune === ''}>Lưu</Button>
+          </div>
+          {showAlert && ShowAlert("Cập nhập thành công!")
+            }
         </form>
       </Form>
     </div>

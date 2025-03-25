@@ -1,18 +1,54 @@
 export type UserData = {
   data: {
-    account: string, 
-    email: string,
-    authenticated: string,
-    role: [string],
-    info: infoUser
-  }
+    account: string;
+    email: string;
+    password: string;
+    token: string;
+    is_authenticated: boolean;
+    fullname: string;
+    phoneNumber: string;
+    avatar: string;
+    date_of_birth: Date;
+    gender: string;
+    role: string[];
+    user_address: UserAddress;
+    ordered: Order;
+    card: Card;
+  };
 };
 
-export type infoUser = {
-  fullname: string,
-  phoneNumber: string,
-  address: [{_id: string, address: string, phone:string}],
-  avatar: string,
-  dateOfBirth: Date,
-  gender: string,
-}
+export type UserAddress = {
+  user: string;
+  list_address: [
+    {
+      phone: string;
+      name: string;
+      address: string;
+      is_default: boolean;
+    }
+  ];
+};
+
+export type Card = {
+  user: string;
+  list_products: [
+    {
+      productID: string;
+      added_at: Date;
+    }
+  ];
+};
+
+export type Order = {
+  user: string;
+  list_products: {
+    productID: string;
+    quantity: number;
+    order_at: Date;
+  }[];
+  status: string;
+  payment_method: string;
+  is_paid: boolean;
+  paid_at: Date;
+  cancelled_at: Date;
+};

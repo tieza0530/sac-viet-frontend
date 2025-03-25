@@ -6,9 +6,16 @@ const userSchema  = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     token : {type: String},
-    authenticated: { type: Boolean },
-    role: {type: [String], enum: ["seller", "user"], default: "user" },
-    info: { type: mongoose.Schema.Types.ObjectId, ref: "UserInfo" }
+    is_authenticated: { type: Boolean },
+    fullname: {type: String},
+    phoneNumber: {type: String},
+    avatar: {type: String},
+    date_of_birth: {type: Date},
+    gender: {type: String},
+    role: { type: [String], enum: ["seller", "user"], default: ["user"] },
+    user_address: { type: mongoose.Schema.Types.ObjectId, ref: "UserAddress" , required: false },
+    ordered: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" , required: false }],
+    card: { type: mongoose.Schema.Types.ObjectId, ref: "Card" , required: false  },
 }, {timestamps: true})
 
 userSchema.pre('save' , async function (next) {
