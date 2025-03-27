@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchProductDetail } from "./components/fetchProductDetail";
 import { useCallback, useEffect, useState } from "react";
 import { ProductProps, ReviewProps } from "@/app/utils/fetchProduct";
@@ -32,6 +32,7 @@ export default function ProductID() {
   const [quantityChoise, setQuantityChoise] = useState(1);
   const { setCart, accessToken } = useAuth()
   const [showAlert, setShowAlert] = useState(false)
+  const route = useRouter()
 
   const getProductDetail = useCallback(async () => {
     const productId = param.productId;
@@ -68,6 +69,9 @@ export default function ProductID() {
     }
   }
   const handleAddProduct = async () => {
+    if(!accessToken){
+      return route.push('/login')
+    }
     try {
       const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/post/product-add-card`, {
         method: "POST",
@@ -85,9 +89,6 @@ export default function ProductID() {
           setShowAlert(false)
         }, 1000);
         try {
-          if (accessToken === null) {
-            updateAccessToken();
-          }
           if (accessToken) {
             const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/cart`, {
               method: "GET",
@@ -108,11 +109,10 @@ export default function ProductID() {
       }
     } catch (error) {
       console.log(error);
-
     }
   }
   return (
-    <div className="2xl:mx-80 bg-white p-4 mt-28">
+    <div className="xl:mx-48 bg-white p-4 mt-28 mb-10 rounded-sm">
       {product?.data.map((value) => {
         return (
           <div key={`product-${value._id}`} className="grid grid-cols-3">
@@ -172,7 +172,17 @@ export default function ProductID() {
                 <p className="text-3xl mt-1 text-red-500">{new Intl.NumberFormat("vi-Vn", { style: "currency", currency: "VND" }).format((value.price / 100) * (100 - value.discount_percentage))} <span className="text-sm">-{value.discount_percentage}%</span>
                 </p>
               </div>
-
+                <div >
+                  <p className="mt-4 text-sm text-neutral-400">An tâm mua sắm cùng Sắc Việt</p>
+                  <div className="grid grid-cols-6 mt-2 text-xs justify-between items-center">
+                    <p className="border-r">Đổi trả miễn phí trong vòng 15 ngày</p>
+                    <p className="border-r mx-1">Hỗ trợ giao hàng tận nhà</p>
+                    <p className="border-r mx-1">100% Hoàn tiền nếu sản phẩm lỗi</p>
+                    <p className="ml-1">Thanh toán Với nhiều phương thức</p>
+                  </div>
+                </div>
+                <div>
+                </div>
               <div className="mt-10 absolute bottom-0">
                 <div className="flex items-center mb-10 text-xl w-auto ">
                   <Button onClick={() => handleChoisedown()} className="border mr-2 bg-white text-black hover:bg-white"><IoRemoveOutline /></Button>
@@ -192,8 +202,5 @@ export default function ProductID() {
       })}
     </div>
   );
-}
-function updateAccessToken() {
-  throw new Error("Function not implemented.");
 }
 

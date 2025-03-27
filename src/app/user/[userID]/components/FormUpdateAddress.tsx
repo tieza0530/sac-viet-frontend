@@ -36,7 +36,7 @@ export function FormUpdateAddress() {
 
   return (
     <div >
-      <p className="text-2xl mb-4 font-medium">Danh sách địa chỉ <span className="text-xs">- Tối đa 3 địa chỉ</span></p>
+      <p className="text-2xl mb-4 font-medium">Danh sách địa chỉ </p>
       <div className="h-32 mb-4">
         <SelectFormAddress />
       </div>

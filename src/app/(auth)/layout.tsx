@@ -9,10 +9,10 @@ export default function LoginLayout({
 }) {
   const roter = useRouter();
   return (
-    <div className="bg-[#EAE0C8] items-start h-screen">
+    <div className="items-start h-screen">
       <div className="">
       <div className="bg-white">
-        <div className="py-4 flex items-center justify-between 2xl:mx-96 text-[#8B5A2B] ">
+        <div className="py-4 flex items-center justify-between xl:mx-48 text-[#8B5A2B] ">
           <div className="flex  items-center cursor-pointer" onClick={() => roter.push('/')} title="Về trang chủ">
             <Image src={'/logo_.png'} width={60} height={60} alt="logo" />
             <span className="font-bold text-3xl">SẮC VIỆT</span>
@@ -22,7 +22,7 @@ export default function LoginLayout({
           </div>
         </div>
       </div>
-     <div className=""> {children}</div>
+     <div className="py-10 bg-[#EAE0C8]"> {children}</div>
       <div><Footer /></div> 
       </div>
     </div>

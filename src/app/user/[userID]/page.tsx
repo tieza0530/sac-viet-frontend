@@ -11,7 +11,7 @@ export default function Index() {
     const params = useParams()
     const route = useRouter();
       return (
-      <div className="2xl:mx-80" >
+      <div className="xl:mx-48 pt-20" >
         <div className="grid grid-cols-12 text-sm">
           <div className="col-span-4 flex justify-center bg-white my-10 rounded-sm mr-5">
             <div className="">

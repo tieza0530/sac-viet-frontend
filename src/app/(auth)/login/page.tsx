@@ -12,8 +12,8 @@ export default function Login() {
     route.push('/forget-password')
   }
   return (
-    <div className="flex justify-center items-center h-full ">
-      <div className="bg-white rounded-sm shadow-2xl px-20 py-20 ">
+    <div className="flex justify-center items-center  h-full">
+      <div className="bg-white rounded-sm shadow-2xl p-20">
         <div className="2xl:w-80  ">
           <div className="text-3xl font-medium flex justify-center items-center mb-10">
             {!forgetPass ? <p>Đăng nhập</p> : <p>Quên mật khẩu</p>}

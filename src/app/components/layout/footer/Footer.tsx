@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export const Footer = () => {
   return (
-    <div className="bg-white py-10 text-[#8B5A2B] ">
-      <div className="2xl:mx-80 flex justify-between  text-sm">
+    <div className="bg-white py-10 text-[#8B5A2B]">
+      <div className="xl:mx-48 flex justify-between  text-sm">
         <div className="flex flex-col justify-center items-center">
           <Image src="/logo_.png" alt="logo1" width={60} height={60}/>
             <span className="text-2xl font-bold">SẮC VIỆT</span>
