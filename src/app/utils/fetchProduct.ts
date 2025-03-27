@@ -31,36 +31,73 @@ export type ProductProps = {
 };
 
 
+export type ProductListProps = {
+      _id: string;
+      seller_id: string;
+      category_id: string;
+      name: string;
+      img: string[];
+      video: string;
+      sold: number;
+      discount_percentage: number;
+      price: number;
+      color: string[];
+      material: string[];
+      dimensions: string;
+      origin: string;
+      handmade: boolean;
+      warranty: string;
+      care_instructions: string;
+      description: string;
+      inventory: number;
+      tags: string[];
+      status: string;
+};
+
 export type CategoryProps = {
-    data: [
-      {
-        _id: string;
-        name: string;
-        slug: string;
-        status: boolean;
-      }
-    ];
-    message: string;
-  };
-  export type ArticleProps = {
-    data: [
-      {
-        _id: string;
-        title: string,
-        img: string[],
-        source: string,
-       content: string,
-       tags: string[],
-       date_at: Date,
-       author: string,
-      views: number,
-      status: string,
-      }
-    ];
-    message: string;
-  };
+  data: [
+    {
+      _id: string;
+      name: string;
+      slug: string;
+      status: boolean;
+    }
+  ];
+  message: string;
+};
+export type ArticleProps = {
+  data: [
+    {
+      _id: string;
+      title: string;
+      img: string[];
+      source: string;
+      content: string;
+      tags: string[];
+      date_at: Date;
+      author: string;
+      views: number;
+      status: string;
+    }
+  ];
+  message: string;
+};
+
+export type ReviewProps = {
+  data: [
+    {
+      _id: string;
+      product_id: string;
+      user_id: string;
+      rating: number;
+      comment: string;
+      images: string[];
+    }
+  ];
+  message: string;
+};
 export const FetchProducts = () => {
-  const { setListProducts, setListCategory, setArticle} = useAuth();
+  const { setListProducts, setListCategory, setArticle } = useAuth();
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -117,8 +154,8 @@ export const FetchProducts = () => {
         console.log(error);
       }
     };
-    getArticle();
-    getProducts();
     getCategory();
+    getProducts();
+    getArticle();
   }, [setListCategory, setListProducts, setArticle]);
 };

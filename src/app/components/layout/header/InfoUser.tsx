@@ -69,7 +69,7 @@ export const InfoUser = () => {
               </span>
               <PiUserListLight className="text-2xl ml-1" />
             </HoverCardTrigger>
-            <HoverCardContent className="mt-3 w-auto border-none mr-1 p-2 rounded-sm text-sm shadow-2xs z-10 text-black bg-white font-medium ">
+            <HoverCardContent className="mt-3 w-auto border-none mr-1 p-2 rounded-sm text-sm shadow-md border bg-neutral-50 z-10 text-black  font-medium ">
               <Button onClick={() => router.push('/user/profile')} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
               <br />
               <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" >Đơn hàng</Button>

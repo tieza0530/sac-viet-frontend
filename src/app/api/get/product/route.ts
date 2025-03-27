@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/app/config/mongoose";
 import Product from "@/app/config/models/Product";
 
 export async function GET() {
-    await connectDB()
   try {
       const products = await Product.find()
       if (!products) {

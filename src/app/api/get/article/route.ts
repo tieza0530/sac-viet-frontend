@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/app/config/mongoose";
 import Article from "@/app/config/models/Article";
 
 export async function GET() {
-    await connectDB()
   try {
       const article = await Article.find()
       if (!article) {

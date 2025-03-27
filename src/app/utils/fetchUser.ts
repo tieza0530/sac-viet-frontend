@@ -6,7 +6,7 @@ import { getNewAccessToken } from "./getNewAccessToken";
 import { UserData } from "../components/type/user.type";
 
 export const FetchUser = () => {
-  const { accessToken, setAccessToken } = useAuth();
+  const { accessToken, setAccessToken, setCart } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
 
 
@@ -42,7 +42,31 @@ const updateAccessToken = useCallback(async () => {
         return null;
       }
     };
+    const getCart = async () => {
+      try {
+        if (accessToken === null) {
+            updateAccessToken();
+        }
+        if (accessToken) {
+          const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/cart`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            cache: "no-store",
+          });
+
+          if (!res.ok) throw new Error("Unauthorized");
+          const data = await res.json();
+          return setCart(data.data.flat());
+        }
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
     getUser();
-  }, [accessToken, updateAccessToken]);
+    getCart();
+  }, [accessToken, updateAccessToken, setCart]);
   return user;
 };

@@ -11,7 +11,7 @@ export default function Home() {
   const { listCategory, listProducts, article } = useAuth()
   FetchProducts();
   return (
-    <div className="2xl:mx-80 pt-6">
+    <div className="2xl:mx-80 pt-28">
       <CarouselHome />
       <CategoryList listCategory={listCategory} />
       <ProductList listCategory={listCategory} listProducts={listProducts} />

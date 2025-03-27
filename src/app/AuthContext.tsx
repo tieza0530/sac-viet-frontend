@@ -4,7 +4,7 @@ import { UserData } from "./components/type/user.type";
 import { Footer } from "./components/layout/footer/Footer";
 import { Header } from "./components/layout/header/Header";
 import { usePathname } from "next/navigation";
-import { ArticleProps, CategoryProps, ProductProps } from "./utils/fetchProduct";
+import { ArticleProps, CategoryProps, ProductListProps, ProductProps } from "./utils/fetchProduct";
 
 interface AuthContextType {
   accessToken: string | null;
@@ -17,6 +17,8 @@ interface AuthContextType {
   listProducts: ProductProps | null
   setArticle: React.Dispatch<React.SetStateAction<ArticleProps | null>>;
   article: ArticleProps | null
+  setCart: React.Dispatch<React.SetStateAction<ProductListProps[] | null>>;
+  cart: ProductListProps[] | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,11 +29,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [listCategory, setListCategory] = useState<CategoryProps | null>(null);
   const [listProducts, setListProducts] = useState<ProductProps | null>(null);
   const [article, setArticle] = useState<ArticleProps | null>(null);
-
+  const [cart, setCart] = useState<ProductListProps[] | null>(null);
+  
   const pathname = usePathname();
   const hideHeaderFooter = pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forget-password");
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken, dataUser, setDataUser, setListCategory, setListProducts, listCategory, listProducts, setArticle, article }}>
+    <AuthContext.Provider value={{ accessToken, setAccessToken, dataUser, setDataUser, setListCategory, setListProducts, listCategory, listProducts, setArticle, article , setCart ,cart}}>
       <div className="flex flex-col min-h-screen">
         <div>
           {!hideHeaderFooter && <Header />}
