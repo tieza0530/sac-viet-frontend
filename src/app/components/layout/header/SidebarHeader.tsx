@@ -11,13 +11,11 @@ import { useEffect } from "react";
 export const SidebarHeader = () => {
   const router = useRouter();
   const { cart, listCategory } = useAuth();
-
   useEffect(() => {
   }, [cart])
-  console.log(cart?.length);
   
   return (
-    <div className="flex py-4 items-center justify-between xl:px-48 bg-white">
+    <div className="flex py-4 items-center justify-between lg:px-24 xl:px-48 2xl:px-80  bg-white">
       <div>
         <Image src={logo} alt="logo" priority />
       </div>

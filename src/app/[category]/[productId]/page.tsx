@@ -112,7 +112,7 @@ export default function ProductID() {
     }
   }
   return (
-    <div className="xl:mx-48 bg-white p-4 mt-28 mb-10 rounded-sm">
+    <div className="lg:mx-24 xl:mx-48 2xl:mx-80 bg-white p-4 mt-28 mb-10 rounded-sm">
       {product?.data.map((value) => {
         return (
           <div key={`product-${value._id}`} className="grid grid-cols-3">
