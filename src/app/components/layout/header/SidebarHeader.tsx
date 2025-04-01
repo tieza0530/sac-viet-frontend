@@ -9,8 +9,8 @@ import { useAuth } from "@/app/AuthContext";
 import { useEffect } from "react";
 
 export const SidebarHeader = () => {
-  const router = useRouter();
-  const { cart, listCategory } = useAuth();
+  const route = useRouter();
+  const { cart, listCategory } = useAuth();  
   useEffect(() => {
   }, [cart])
   
@@ -21,14 +21,14 @@ export const SidebarHeader = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <Button onClick={() => router.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-black">Trang chủ</Button>
-        <Button onClick={() => router.replace('/products')} className="bg-inherit hover:bg-inherit shadow-none text-black">
+        <Button onClick={() => route.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-black">Trang chủ</Button>
+        <Button onClick={() => route.replace('/products')} className="bg-inherit hover:bg-inherit shadow-none text-black">
           Sản phẩm
         </Button>
-        <Button onClick={() => router.replace('/contact')} className="bg-inherit hover:bg-inherit shadow-none text-black">
+        <Button onClick={() => route.replace('/contact')} className="bg-inherit hover:bg-inherit shadow-none text-black">
           Liên hệ
         </Button>
-        <Button onClick={() => router.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-black">Giới thiệu</Button>
+        <Button onClick={() => route.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-black">Giới thiệu</Button>
       </div>
       <div className="flex justify-center items-center relative">
         <InputSearch />
@@ -45,13 +45,16 @@ export const SidebarHeader = () => {
                 <p className="text-neutral-400">Chưa có sản phẩm</p>
               </div>
             )}
+            <div className="flex justify-between items-center">
             <p className="text-neutral-400 text-xs"  hidden={cart?.length === 0 || cart?.length === undefined  }>{cart?.length} sản phẩm thêm vào giỏ hàng</p>
-            {cart?.map((value, idx) => {
+            <Button className="text-white bg-red-500 hover:bg-red-500/75"  hidden={cart?.length === 0 || cart?.length === undefined  } onClick={() => route.push('/cart')}>Xem giỏ hàng</Button>
+            </div>
+             {cart?.map((value, idx) => {
                    const categorySlug = listCategory?.data.find(
                     (category) => category._id === value.category_id
                   )?.slug
               return (
-                <div key={`product-in-cart-${value._id + idx}`} className="mt-2 flex cursor-pointer" onClick={() => router.push(`/${categorySlug}/${value._id}`)}>
+                <div key={`product-in-cart-${value._id + idx}`} className="mt-2 flex cursor-pointer" onClick={() => route.push(`/${categorySlug}/${value._id}`)}>
                   <Image
                     src={`/do-tho/${value.img[0]}`}
                     alt="anh-san-pham"
@@ -66,7 +69,7 @@ export const SidebarHeader = () => {
                   </div>
                 </div>
               )
-            })}
+            })} 
           </div>
         </div>
       </div>

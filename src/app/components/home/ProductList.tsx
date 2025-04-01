@@ -11,7 +11,7 @@ export const ProductList = ({listProducts, listCategory} : {listProducts: Produc
           <div className="py-20 ">
                 <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center">Gợi ý hôm nay</p>
                 <div className="grid grid-cols-6 gap-2 mt-10">
-                  {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, 24).map((value) => {
+                  {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, 36).map((value) => {
                     const categorySlug = listCategory?.data.find(
                       (category) => category._id === value.category_id
                     )?.slug

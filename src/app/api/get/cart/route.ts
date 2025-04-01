@@ -21,13 +21,15 @@ const authHeader = req.headers.get("authorization");
         return NextResponse.json({ error: "Invalid token" }, { status: 401 });
       }
       const findProduct = await Promise.all(
-        findCard.list_products.map((value: ListProductProps) => 
-          Product.find({ _id: value.productID })
+        findCard.list_products.map(async (value: ListProductProps) =>{
+          const product = await Product.findOne({ _id: value.productID });
+          return product && { ...product.toObject(), quantity: value.quantity }
+          } 
         )
       );
       return NextResponse.json(
         {
-          data: findProduct, 
+          data: findProduct,
           message: "Success",
         },
         { status: 200, statusText: "Success" }
