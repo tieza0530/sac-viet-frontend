@@ -1,9 +1,7 @@
-import * as dotenv from "dotenv";
 import User from "@/app/config/models/User";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
-dotenv.config();
 
 export async function POST(req: NextRequest) {
   try {

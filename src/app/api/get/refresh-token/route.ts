@@ -12,9 +12,9 @@ export async function GET(req: NextRequest) {
             }, {status: 401})
         }
 
-        const decoded = jwt.verify(refreshToken , SECRET_KEY) as {id: string , account: string , email: string}
+        const decoded = jwt.verify(refreshToken , SECRET_KEY) as {id: string , account: string , email: string, role: string[]}
 
-        const accessToken = jwt.sign({id: decoded.id , account: decoded.account ,email: decoded.email} , SECRET_KEY , { expiresIn: '15m'})
+        const accessToken = jwt.sign({id: decoded.id , account: decoded.account ,email: decoded.email , role: decoded.role} , SECRET_KEY , { expiresIn: '15m'})
         return NextResponse.json({
             accessToken,
             message: 'Success'

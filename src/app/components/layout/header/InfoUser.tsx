@@ -15,7 +15,7 @@ import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 export const InfoUser = () => {
   const { accessToken, setAccessToken, setDataUser, dataUser } = useAuth();
   const [checkLogin, setCheckLogin] = useState(false);
-  const router = useRouter();
+  const route = useRouter();
 
   const getData = async () => {
     const data = await FetchUser();
@@ -45,7 +45,7 @@ export const InfoUser = () => {
     });
     if (res.status === 200) {
       setAccessToken(null);
-      router.push('/')
+      route.push('/')
       setTimeout(() => document.location.reload(), 1000)
     }
   };
@@ -54,7 +54,7 @@ export const InfoUser = () => {
 
       {!checkLogin ? (
         <span
-          onClick={() => router.replace("/login")}
+          onClick={() => route.replace("/login")}
           className="flex justify-center items-center cursor-pointer py-1 px-1 rounded-sm  text-sm hover:bg-[#e4d5b2] "
           title="Nhấn để đăng nhập"
         >
@@ -70,11 +70,15 @@ export const InfoUser = () => {
               <PiUserListLight className="text-2xl ml-1" />
             </HoverCardTrigger>
             <HoverCardContent className="mt-3 w-auto border-none mr-1 p-2 rounded-sm text-sm shadow-md border bg-neutral-50 z-10 text-black  font-medium ">
-              <Button onClick={() => router.push('/user/profile')} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
+              <Button onClick={() => route.push('/user/profile')} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
               <br />
               <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" >Đơn hàng</Button>
               <br />
-              <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" >Đăng ký kênh bán hàng</Button>
+              {dataUser?.data.role.includes("seller") ? 
+                   (<Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" onClick={()=> route.push('/seller')}>Quản lý cửa hàng</Button>)
+                :
+               (<Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" onClick={()=> route.push('/seller-register')}>Đăng ký kênh bán hàng</Button>)
+              }
               <br />
               <Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Đánh giá của tôi</Button>
               <br />

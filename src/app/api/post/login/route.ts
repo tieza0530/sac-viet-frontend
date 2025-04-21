@@ -32,12 +32,12 @@ export async function POST(req: NextRequest) {
       );
     }
     const refreshToken = jwt.sign(
-      { id: checkUser._id, account: checkUser.account, email: checkUser.email },
+      { id: checkUser._id, account: checkUser.account, email: checkUser.email, role: checkUser.role },
       SECRET_KEY,
       { expiresIn: "7d" }
     );
     const access_token = jwt.sign(
-      { id: checkUser._id, account: checkUser.account, email: checkUser.email },
+      { id: checkUser._id, account: checkUser.account, email: checkUser.email,  role: checkUser.role },
       SECRET_KEY,
       { expiresIn: "15m" }
     );

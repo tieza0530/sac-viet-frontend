@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 import { ProductProps, ReviewProps } from "@/app/utils/fetchProduct";
 import Image from "next/image";
 import * as React from "react";
-import { FaStar } from "react-icons/fa6";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -23,6 +22,8 @@ import { BsCartPlus } from "react-icons/bs";
 import { useAuth } from "@/app/AuthContext";
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 import { ShowAlert } from "@/app/helper/ShowAlert";
+import { FaStar } from "react-icons/fa6";
+import { LuUserRound } from "react-icons/lu";
 
 export default function ProductID() {
   const param = useParams();
@@ -33,7 +34,7 @@ export default function ProductID() {
   const { setCart, accessToken } = useAuth()
   const [showAlert, setShowAlert] = useState(false)
   const route = useRouter()
-
+  
   const getProductDetail = useCallback(async () => {
     const productId = param.productId;
     if (typeof productId === "string" && productId) {
@@ -69,7 +70,7 @@ export default function ProductID() {
     }
   }
   const handleAddProduct = async () => {
-    if(!accessToken){
+    if (!accessToken) {
       return route.push('/login')
     }
     try {
@@ -99,7 +100,7 @@ export default function ProductID() {
             });
 
             if (!res.ok) throw new Error("Unauthorized");
-            const data = await res.json();            
+            const data = await res.json();
             return setCart(data.data.flat());
           }
         } catch (error) {
@@ -112,66 +113,67 @@ export default function ProductID() {
     }
   }
   return (
-    <div className="lg:mx-24 xl:mx-48 2xl:mx-80 bg-white p-4 mt-28 mb-10 rounded-sm">
+    <div className="lg:mx-24 xl:mx-48 2xl:mx-80 mt-28 mb-10 ">
       {product?.data.map((value) => {
         return (
-          <div key={`product-${value._id}`} className="grid grid-cols-3">
-            <div className="col-span-1">
-              <Image
-                src={`/do-tho/${value.img[changeImg]}`}
-                alt="anh-san-pham"
-                width={300}
-                height={300}
-                className="w-full"
-              />
-              <div className="flex mt-1 ">
-                <Carousel
-                  opts={{
-                    align: "start",
-                  }}
-                  className="w-full relative"
-                >
-                  <CarouselContent className="pl-4">
-                    {value.img.map((valueImg, idx) => (
-                      <CarouselItem key={idx} className="basis-1/5 pl-0">
-                        <div className="p-1">
-                          <Card className="p-0">
-                            <CardContent className="flex aspect-square items-center justify-center p-0 cursor-pointer">
-                              <Image
-                                src={`/do-tho/${valueImg}`}
-                                alt="anh-san-pham"
-                                width={48}
-                                height={48}
-                                className="mx-1 w-full h-full"
-                                onClick={() => setChangeImg(idx)}
-                              />
-                            </CardContent>
-                          </Card>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="text-white hover:bg-inherit hover:text-white bg-inherit border-0 left-0 text-2xl" />
-                  <CarouselNext className="text-white hover:bg-inherit hover:text-white bg-inherit border-0 right-0 text-2xl" />
-                </Carousel>
-              </div>
-            </div>
-            <div className="col-span-2 ml-10 relative">
-              <p className="text-xl">{value.name}</p>
-              <div className="flex items-center mt-2">
-                <div className="flex justify-center items-center mr-4"><p className="border-b-1 mr-1">{review?.data?.length
-                  ? (review.data.reduce((acc, value) => acc + value.rating, 0) / review.data.length).toFixed(1)
-                  : "chưa có đánh giá"}</p><span hidden={review?.data?.length ? false : true}><FaStar className="text-yellow-300" /></span></div>
-                <div className="flex justify-center items-center mr-4" hidden={review?.data?.length ? false : true}>
-                  <p className="border-b-1 mr-1" >{review?.data.length}</p><span className="text-sm text-neutral-600">Đánh giá</span>
+          <div key={`product-${value._id}`}>
+            <div className="grid grid-cols-3 p-4 bg-white rounded-sm">
+              <div className="col-span-1">
+                <Image
+                  src={`/do-tho/${value.img[changeImg]}`}
+                  alt="anh-san-pham"
+                  width={300}
+                  height={300}
+                  className="w-full"
+                />
+                <div className="flex mt-1 ">
+                  <Carousel
+                    opts={{
+                      align: "start",
+                    }}
+                    className="w-full relative"
+                  >
+                    <CarouselContent className="pl-4">
+                      {value.img.map((valueImg, idx) => (
+                        <CarouselItem key={idx} className="basis-1/5 pl-0">
+                          <div className="p-1">
+                            <Card className="p-0">
+                              <CardContent className="flex aspect-square items-center justify-center p-0 cursor-pointer">
+                                <Image
+                                  src={`/do-tho/${valueImg}`}
+                                  alt="anh-san-pham"
+                                  width={48}
+                                  height={48}
+                                  className="mx-1 w-full h-full"
+                                  onClick={() => setChangeImg(idx)}
+                                />
+                              </CardContent>
+                            </Card>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="text-white hover:bg-inherit hover:text-white bg-inherit border-0 left-0 text-2xl" />
+                    <CarouselNext className="text-white hover:bg-inherit hover:text-white bg-inherit border-0 right-0 text-2xl" />
+                  </Carousel>
                 </div>
-                <div className="flex justify-center items-center"><p className="border-b-1 mr-1">{value.sold}</p> <span className="text-sm text-neutral-600">Lượt bán</span></div>
               </div>
-              <div>
-                <p className="text-sm mt-4 line-through">  {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value.price)}</p>
-                <p className="text-3xl mt-1 text-red-500">{new Intl.NumberFormat("vi-Vn", { style: "currency", currency: "VND" }).format((value.price / 100) * (100 - value.discount_percentage))} <span className="text-sm">-{value.discount_percentage}%</span>
-                </p>
-              </div>
+              <div className="col-span-2 ml-10 relative">
+                <p className="text-xl">{value.name}</p>
+                <div className="flex items-center mt-2">
+                  <div className="flex justify-center items-center mr-4"><p className="border-b-1 mr-1">{review?.data?.length
+                    ? (review.data.reduce((acc, value) => acc + value.rating, 0) / review.data.length).toFixed(1)
+                    : "chưa có đánh giá"}</p><span hidden={review?.data?.length ? false : true}><FaStar className="text-yellow-300" /></span></div>
+                  <div className="flex justify-center items-center mr-4" hidden={review?.data?.length ? false : true}>
+                    <p className="border-b-1 mr-1" >{review?.data.length}</p><span className="text-sm text-neutral-600">Đánh giá</span>
+                  </div>
+                  <div className="flex justify-center items-center"><p className="border-b-1 mr-1">{value.sold}</p> <span className="text-sm text-neutral-600">Lượt bán</span></div>
+                </div>
+                <div>
+                  <p className="text-sm mt-4 line-through">  {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value.price)}</p>
+                  <p className="text-3xl mt-1 text-red-500">{new Intl.NumberFormat("vi-Vn", { style: "currency", currency: "VND" }).format((value.price / 100) * (100 - value.discount_percentage))} <span className="text-sm">-{value.discount_percentage}%</span>
+                  </p>
+                </div>
                 <div >
                   <p className="mt-4 text-sm text-neutral-400">An tâm mua sắm cùng Sắc Việt</p>
                   <div className="grid grid-cols-6 mt-2 text-xs justify-between items-center">
@@ -183,20 +185,58 @@ export default function ProductID() {
                 </div>
                 <div>
                 </div>
-              <div className="mt-10 absolute bottom-0">
-                <div className="flex items-center mb-10 text-xl w-auto ">
-                  <Button onClick={() => handleChoisedown()} className="border mr-2 bg-white text-black hover:bg-white"><IoRemoveOutline /></Button>
-                  <span className="flex justify-center items-center w-6 text-sm"> {quantityChoise}</span>
-                  <Button onClick={() => handleChoiseUp()} className="border ml-2 bg-white text-black hover:bg-white"><IoAddOutline /></Button>
-                  <span className="ml-6 text-sm text-neutral-400">{value.inventory} sản phẩm có sẵn</span>
-                </div>
-                <div className="flex justify-center items-center">
-                  <Button className="p-6 bg-inherit text-red-500 shadow-0 border border-red-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
-                  <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2">Mua ngay</Button>
+                <div className="mt-10 absolute bottom-0">
+                  <div className="flex items-center mb-10 text-xl w-auto ">
+                    <Button onClick={() => handleChoisedown()} className="border mr-2 bg-white text-black hover:bg-white"><IoRemoveOutline /></Button>
+                    <span className="flex justify-center items-center w-6 text-sm"> {quantityChoise}</span>
+                    <Button onClick={() => handleChoiseUp()} className="border ml-2 bg-white text-black hover:bg-white"><IoAddOutline /></Button>
+                    <span className="ml-6 text-sm text-neutral-400">{value.inventory} sản phẩm có sẵn</span>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <Button className="p-6 bg-inherit text-red-500 shadow-0 border border-red-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
+                    <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2">Mua ngay</Button>
+                  </div>
                 </div>
               </div>
+              {showAlert && ShowAlert("Thêm sản phẩm thành công!")}
             </div>
-            {showAlert && ShowAlert("Thêm sản phẩm thành công!")}
+            <div className="p-4 bg-white rounded-sm mt-3">
+              <p className="text-2xl font-medium mb-6">Chi tiết sản phẩm</p>
+              <p className="text-xl font-medium mb-4">{value.name}</p>
+              <p dangerouslySetInnerHTML={{ __html: value.description }}></p>
+              <p>chiều cao: {value.dimensions}</p>
+              <p>{value.handmade && "Hàng thủ công"}</p>
+              <p>Nguồn gốc: {value.origin}</p>
+              <p>Số lượng trong kho: {value.inventory}</p>
+              <p className="text-2xl font-medium my-6">Hướng dẫn sử dụng</p>
+              <p>{value.care_instructions}</p>
+            </div>
+            <div className="p-4 bg-white rounded-sm mt-3">
+              <p className="text-2xl font-medium mb-6">Đánh giá sản phẩm</p>
+              {review?.data.map((value) => {
+                return (
+                  <div key={`review-${value._id}`} className="my-6">
+                    <div className="flex mb-2">
+                      <LuUserRound className="text-3xl" />
+                      <div>
+                        <p>{(value.user_id).slice(0, 6) + "*".repeat((value.user_id).length - 6)}</p>
+                        <div className="flex">
+                          {[...Array(value.rating)].map((_, idx) => (
+                            <FaStar className="text-yellow-300" key={idx} />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <p>{value.comment}</p>
+                    <div className="flex">
+                      {value.images.map((value, idx) => (
+                        <Image key={`anh-review-${idx}`} src={`/do-tho/${value}`} alt={value} width={60} height={60} className="mx-2" />
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         );
       })}

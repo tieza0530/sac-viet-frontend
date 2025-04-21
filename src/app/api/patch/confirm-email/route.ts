@@ -12,7 +12,6 @@ export async function PATCH(req: NextRequest) {
     if (!authHeader || !authHeader.startsWith("Bearer")) {
       return NextResponse.json({ message: "Unauthorization" }, { status: 401 });
     }
-    console.log(authHeader);
     
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, SECRET_KEY) as {

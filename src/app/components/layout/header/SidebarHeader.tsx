@@ -4,22 +4,21 @@ import { InputSearch } from "./InputSearch"
 import { PiShoppingCartThin } from "react-icons/pi"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "../../../../../public/logo.png";
 import { useAuth } from "@/app/AuthContext";
 import { useEffect } from "react";
 
 export const SidebarHeader = () => {
   const route = useRouter();
-  const { cart, listCategory } = useAuth();  
+  const { cart, listCategory } = useAuth();
   useEffect(() => {
   }, [cart])
-  
-  return (
-    <div className="flex py-4 items-center justify-between lg:px-24 xl:px-48 2xl:px-80  bg-white">
-      <div>
-        <Image src={logo} alt="logo" priority />
-      </div>
 
+  return (
+    <div className="flex py-2 items-center justify-between lg:px-24 xl:px-48 2xl:px-80 text-[#8B5A2B] bg-white">
+      <div className="flex items-center">
+        <Image src="/logo_.png" alt="logo1" width={60} height={60} />
+        <span className="text-2xl font-bold">SẮC VIỆT</span>
+      </div>
       <div className="flex justify-center items-center">
         <Button onClick={() => route.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-black">Trang chủ</Button>
         <Button onClick={() => route.replace('/products')} className="bg-inherit hover:bg-inherit shadow-none text-black">
@@ -34,25 +33,25 @@ export const SidebarHeader = () => {
         <InputSearch />
         <div className="group">
           <div className="relative">
-          <PiShoppingCartThin className="text-2xl ml-2" title="giỏ hàng" />
-          <p className="absolute -top-2 text-xs -right-3 bg-red-500 text-white rounded-2xl px-1"  hidden={cart?.length === 0 || cart?.length === undefined  }>{cart?.length}</p>
+            <PiShoppingCartThin className="text-2xl ml-2" title="giỏ hàng" />
+            <p className="absolute -top-2 text-xs -right-3 bg-red-500 text-white rounded-2xl px-1" hidden={cart?.length === 0 || cart?.length === undefined}>{cart?.length}</p>
           </div>
           <div className="absolute left-0 top-3 w-full h-20 group-hover:block hidden"></div>
           <div className="bg-neutral-50 p-2 shadow-md border rounded-sm absolute w-full h-96 top-10 left-0 overflow-y-scroll z-10 group-hover:block hidden">
-            {cart?.length === 0 || cart?.length === undefined  && (
+            {(cart?.length === 0 || cart?.length === undefined) && (
               <div className="w-full h-full flex flex-col justify-center items-center">
-                <PiShoppingCartThin  className="text-4xl text-neutral-400"/>
+                <PiShoppingCartThin className="text-4xl text-neutral-400" />
                 <p className="text-neutral-400">Chưa có sản phẩm</p>
               </div>
             )}
             <div className="flex justify-between items-center">
-            <p className="text-neutral-400 text-xs"  hidden={cart?.length === 0 || cart?.length === undefined  }>{cart?.length} sản phẩm thêm vào giỏ hàng</p>
-            <Button className="text-white bg-red-500 hover:bg-red-500/75"  hidden={cart?.length === 0 || cart?.length === undefined  } onClick={() => route.push('/cart')}>Xem giỏ hàng</Button>
+              <p className="text-neutral-400 text-xs" hidden={cart?.length === 0 || cart?.length === undefined}>{cart?.length} sản phẩm thêm vào giỏ hàng</p>
+              <Button className="text-white bg-red-500 hover:bg-red-500/75" hidden={cart?.length === 0 || cart?.length === undefined} onClick={() => route.push('/cart')}>Xem giỏ hàng</Button>
             </div>
-             {cart?.map((value, idx) => {
-                   const categorySlug = listCategory?.data.find(
-                    (category) => category._id === value.category_id
-                  )?.slug
+            {cart?.map((value, idx) => {
+              const categorySlug = listCategory?.data.find(
+                (category) => category._id === value.category_id
+              )?.slug
               return (
                 <div key={`product-in-cart-${value._id + idx}`} className="mt-2 flex cursor-pointer" onClick={() => route.push(`/${categorySlug}/${value._id}`)}>
                   <Image
@@ -69,7 +68,7 @@ export const SidebarHeader = () => {
                   </div>
                 </div>
               )
-            })} 
+            })}
           </div>
         </div>
       </div>
