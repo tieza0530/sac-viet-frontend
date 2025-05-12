@@ -8,8 +8,7 @@ import { useRouter } from "next/navigation";
 export const ProductList = ({listProducts, listCategory} : {listProducts: ProductProps | null, listCategory: CategoryProps | null}) => {
     const route = useRouter()
     return (
-          <div className="py-20 ">
-                <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center">Gợi ý hôm nay</p>
+          <div className="pb-20 ">
                 <div className="grid grid-cols-6 gap-2 mt-10">
                   {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, 36).map((value) => {
                     const categorySlug = listCategory?.data.find(

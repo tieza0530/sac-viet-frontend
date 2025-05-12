@@ -14,6 +14,7 @@ export default function Home() {
     <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
       <CarouselHome />
       <CategoryList listCategory={listCategory} />
+      <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center pt-20">Gợi ý hôm nay</p>
       <ProductList listCategory={listCategory} listProducts={listProducts} />
       <ArticleList article={article} />
       <ServiceHighlights />
