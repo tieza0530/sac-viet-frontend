@@ -4,16 +4,13 @@ import Image from "next/image";
 import { FiTrendingDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
-export const ProductList = ({ listProducts, listCategory }: { listProducts: ProductProps | null, listCategory: CategoryProps | null }) => {
+export const ProductListInCategory = ({ listProducts, listCategory }: { listProducts: ProductProps | null, listCategory: CategoryProps | null }) => {
   const route = useRouter()
-  const [addProducts, setAddProducts] = useState(36);
   return (
     <div className="">
       <div className="grid grid-cols-6 gap-2 mt-10">
-        {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, addProducts).map((value) => {
+        {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, 24).map((value) => {
           const categorySlug = listCategory?.data.find(
             (category) => category._id === value.category_id
           )?.slug
@@ -39,9 +36,6 @@ export const ProductList = ({ listProducts, listCategory }: { listProducts: Prod
           )
         })}
 
-      </div>
-      <div className="flex items-center justify-center w-full">
-        <Button className="mt-10 bg-white text-[var(--color-text-root)] hover:text-[var(--color-text-root) hover:bg-neutral-100 p-6" onClick={() => setAddProducts(addProducts + 6)}>Xem thêm sản phẩm</Button>
       </div>
     </div>
   )

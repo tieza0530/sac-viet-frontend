@@ -52,7 +52,7 @@ export type ProductListProps = {
       inventory: number;
       tags: string[];
       status: string;
-      quantity?: number;
+      quantity: number;
 };
 
 export type CategoryProps = {

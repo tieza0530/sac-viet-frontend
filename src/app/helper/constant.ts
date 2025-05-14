@@ -7,3 +7,12 @@ export const REFRESH_TOKEN = process.env.REFRESH_TOKEN
 export const CLIENT_ID = process.env.CLIENT_ID
 export const CLIENT_SECRET = process.env.CLIENT_SECRET
 export const phoneRegex = /^(0[3|5|7|8|9][0-9]{8}|(\+84)[3|5|7|8|9][0-9]{8})$/;
+export const normalizeVietnamese = (str: string) => {
+  return str
+    .normalize("NFD")                     
+    .replace(/[\u0300-\u036f]/g, "")   
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .trim();
+}

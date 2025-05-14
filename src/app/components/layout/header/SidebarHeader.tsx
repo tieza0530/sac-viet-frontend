@@ -21,13 +21,13 @@ export const SidebarHeader = () => {
       </div>
       <div className="flex justify-center items-center">
         <Button onClick={() => route.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-black">Trang chủ</Button>
-        <Button onClick={() => route.replace('/products')} className="bg-inherit hover:bg-inherit shadow-none text-black">
-          Sản phẩm
+        <Button onClick={() => route.replace('/news')} className="bg-inherit hover:bg-inherit shadow-none text-black">
+          Tin tức
         </Button>
         <Button onClick={() => route.replace('/contact')} className="bg-inherit hover:bg-inherit shadow-none text-black">
           Liên hệ
         </Button>
-        <Button onClick={() => route.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-black">Giới thiệu</Button>
+        <Button onClick={() => route.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-black">Về chúng tôi</Button>
       </div>
       <div className="flex justify-center items-center relative">
         <InputSearch />
@@ -36,8 +36,8 @@ export const SidebarHeader = () => {
             <PiShoppingCartThin className="text-2xl ml-2" title="giỏ hàng" />
             <p className="absolute -top-2 text-xs -right-3 bg-red-500 text-white rounded-2xl px-1" hidden={cart?.length === 0 || cart?.length === undefined}>{cart?.length}</p>
           </div>
-          <div className="absolute left-0 top-3 w-full h-20 group-hover:block hidden"></div>
-          <div className="bg-neutral-50 p-2 shadow-md border rounded-sm absolute w-full h-96 top-10 left-0 overflow-y-scroll z-10 group-hover:block hidden">
+          <div className="absolute right-0 top-3 w-1/3 h-20 group-hover:block hidden"></div>
+          <div className="bg-neutral-50 p-2 shadow-md border rounded-sm absolute w-full h-96 top-10 left-0 overflow-y-scroll z-10 group-hover:block hidden ">
             {(cart?.length === 0 || cart?.length === undefined) && (
               <div className="w-full h-full flex flex-col justify-center items-center">
                 <PiShoppingCartThin className="text-4xl text-neutral-400" />

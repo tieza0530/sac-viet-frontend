@@ -11,6 +11,7 @@ import {
   FormItem
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
     valueSearch: z.string().min(2, {
@@ -19,15 +20,18 @@ const FormSchema = z.object({
 })
 
 export function InputSearch() {
+    const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       valueSearch: "",
+      
     },
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-   console.log(data);
+       router.push(`/search?search=${encodeURIComponent(data.valueSearch)}`);
   }
 
   return (

@@ -176,7 +176,7 @@ export default function ProductID() {
                 </div>
                 <div >
                   <p className="mt-4 text-sm text-neutral-400">An tâm mua sắm cùng Sắc Việt</p>
-                  <div className="grid grid-cols-6 mt-2 text-xs justify-between items-center">
+                  <div className=" grid-cols-6 mt-2 text-xs justify-between items-center">
                     <p className="border-r">Đổi trả miễn phí trong vòng 15 ngày</p>
                     <p className="border-r mx-1">Hỗ trợ giao hàng tận nhà</p>
                     <p className="border-r mx-1">100% Hoàn tiền nếu sản phẩm lỗi</p>
