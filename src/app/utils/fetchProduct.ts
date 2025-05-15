@@ -27,6 +27,8 @@ export type ProductProps = {
       status: string;
     }
   ];
+  currentPage: number;
+  totalPages: number;
   message: string;
 };
 

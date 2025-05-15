@@ -9,7 +9,7 @@ export const CategoryList = ({listCategory}: {listCategory: CategoryProps | null
         {listCategory?.data.map((value, idx) => {
             return (
               <div key={idx} className="m-1" onClick={() => route.push(`/${value.slug}`)}>
-                <p className="bg-white h-20 flex justify-center items-center hover:bg-neutral-50 font-medium p-2 shadow cursor-pointer rounded-sm" title={value.name}>{value.name}</p>
+                <p className="bg-white h-20 flex justify-center items-center text-center hover:bg-neutral-50 font-medium p-2 shadow cursor-pointer rounded-sm" title={value.name}>{value.name}</p>
               </div>
             )
           })}

@@ -5,15 +5,39 @@ import Category from "@/app/config/models/Category";
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const sortPrice = searchParams.get("sort");
     const typeCategory = searchParams.get("typeCategory");
+
+    const limit = 6;
+    const skip = (page - 1) * limit;
+
     const category = await Category.findOne({ slug: typeCategory });
-    const products = await Product.find({ category_id: category._id });
-    if (!products) {
-      return NextResponse.json({ error: "Invalid!" }, { status: 401 });
+    if (!category) {
+      return NextResponse.json({ error: "Invalid category!" }, { status: 400 });
     }
+
+    const sortCondition: Record<string, 1 | -1>  = {}; 
+    if (sortPrice === "price-up") {
+      sortCondition.price = 1;
+    } else if (sortPrice === "price-down") {
+      sortCondition.price = -1;
+    }
+
+    const products = await Product.find({ category_id: category._id })
+      .sort(sortCondition)
+      .skip(skip)
+      .limit(limit);
+
+    const totalProducts = await Product.countDocuments({
+      category_id: category._id,
+    });
+
     return NextResponse.json(
       {
         data: products,
+        currentPage: page,
+        totalPages: Math.ceil(totalProducts / limit),
         message: "Success",
       },
       { status: 200 }
