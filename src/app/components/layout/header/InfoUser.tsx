@@ -69,18 +69,18 @@ export const InfoUser = () => {
               </span>
               <PiUserListLight className="text-2xl ml-1" />
             </HoverCardTrigger>
-            <HoverCardContent className="mt-3 w-auto border-none mr-1 p-2 rounded-sm text-sm shadow-md border bg-neutral-50 z-10 text-black  font-medium ">
-              <Button onClick={() => route.push('/user/profile')} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">Quản lý tài khoản</Button>
+            <HoverCardContent className="mt-3 w-auto border mr-1 p-2 rounded-sm text-sm shadow-md bg-neutral-50 z-10 font-medium ">
+              <Button onClick={() => route.push('/user/profile')} className="w-full bg-inherit shadow-none  hover:bg-[#dadadaab] text-[var(--color-text-root)]">Quản lý tài khoản</Button>
               <br />
-              <Button onClick={() => route.push('/cart')} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" >Đơn hàng</Button>
+              <Button onClick={() => route.push('/cart')} className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" >Đơn hàng</Button>
               <br />
               {dataUser?.data.role.includes("seller") ? 
-                   (<Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" onClick={()=> route.push('/seller')}>Quản lý cửa hàng</Button>)
+                   (<Button className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" onClick={()=> route.push('/seller')}>Quản lý cửa hàng</Button>)
                 :
-               (<Button className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]" onClick={()=> route.push('/seller-register')}>Đăng ký kênh bán hàng</Button>)
+               (<Button className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" onClick={()=> route.push('/seller-register')}>Đăng ký kênh bán hàng</Button>)
               }
               <br />
-              <Button onClick={() => handleLogout()} className="w-full bg-inherit shadow-none text-black hover:bg-[#dadadaab]">
+              <Button onClick={() => handleLogout()} className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]">
                 Đăng xuất
               </Button>
             </HoverCardContent>

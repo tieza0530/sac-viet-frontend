@@ -43,12 +43,12 @@ export function InputSearch() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Bạn đang tìm kiếm sản phẩm nào ?" {...field} className="2xl:w-80" />
+                <Input placeholder="Bạn đang tìm kiếm sản phẩm nào ?" {...field} className="2xl:w-80 " />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button className="absolute top-0 right-0 shadow-none bg-inherit hover:bg-inherit text-black " type="submit" ><IoSearch /></Button>
+        <Button className="absolute top-0 right-0 shadow-none hover:bg-neutral-50 text-black bg-neutral-100 border " type="submit" ><IoSearch className="text-[var(--color-text-root)] "/></Button>
       </form>
     </Form>
   )

@@ -6,12 +6,11 @@ import { ProductProps } from "../utils/fetchProduct";
 import { useAuth } from "../AuthContext";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { ProductListInCategory } from "../[category]/components/ProductList";
 
 export default function Search() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const { setListProducts, listProducts , listCategory } = useAuth()
+  const { setListProducts } = useAuth()
   useEffect(() => {
    const getProductSearch = async (param : ParamValue) => {
       try{
@@ -38,7 +37,7 @@ export default function Search() {
     return (
          <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
              <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center pt-10">Kết quả tìm kiếm {search}</p>
-            {listProducts?.data.length  ? <ProductListInCategory listCategory={listCategory}  listProducts={listProducts}/> : "Không tìm thấy sản phẩm phù hợp!"}
+            {/* {listProducts?.data.length  ? <ProductListInCategory listCategory={listCategory}  listProducts={listProducts}/> : "Không tìm thấy sản phẩm phù hợp!"} */}
          </div>
     );
   }

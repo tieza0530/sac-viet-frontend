@@ -9,44 +9,52 @@ import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function OptionPrice() {
-  const [selectedPrice, setSelectedPrice] = useState("")
+  const [selectedChoice, setselectedChoice] = useState("")
   const { setListProducts } = useAuth();
   const route = useRouter()
   const param = useParams()
   const paramPage = useSearchParams();
   
- useEffect(() => {
-  const fetchData = async () => {
-    try {
-        route.push(`/${param.category}?page=${paramPage.get('page') || 1}${selectedPrice && `&sort=${selectedPrice}`}`)
-        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/product-follow-category?typeCategory=${param.category}&page=${paramPage.get("page") || 1}&sort=${selectedPrice}`, {
-          method: "GET",
-          cache: "no-store",
-        });
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // route.push(`/${param.category}?page=${paramPage.get('page') || 1}${selectedChoice && `&sort=${selectedChoice}`}`)
+          const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/product-follow-category?typeCategory=${param.category}&page=${paramPage.get("page") || 1}&sort=${selectedChoice}`, {
+            method: "GET",
+            cache: "no-store",
+          });
 
-        if (!res.ok) throw new Error("Unauthorized");
-        const result = await res.json();
-         const data: ProductProps= result;
-      setListProducts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+          if (!res.ok) throw new Error("Unauthorized");
+          const result = await res.json();
+          const data: ProductProps = result;
+          setListProducts(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchData();
+  }, [param.category, paramPage, route ,selectedChoice, setListProducts]);
 
-  fetchData();
-}, [param.category, paramPage ,route, selectedPrice, setListProducts]);
+  return (
+    <RadioGroup className="mt-4" value={selectedChoice}
+      onValueChange={(value) => setselectedChoice(value)}>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="price-up" id="price-up" />
+        <Label htmlFor="price-up">Giá từ thấp tới cao</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="price-down" id="price-down" />
+        <Label htmlFor="price-down">Giá từ cao tới thấp</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="best-selling" id="best-selling" />
+        <Label htmlFor="best-selling">Bán chạy nhất</Label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="biggest-discount" id="biggest-discount" />
+        <Label htmlFor="biggest-discount">Giảm giá nhiều</Label>
+      </div>
 
-return (
-  <RadioGroup className="mt-4" value={selectedPrice}
-    onValueChange={(value) => setSelectedPrice(value)}>
-    <div className="flex items-center space-x-2">
-      <RadioGroupItem value="price-up" id="price-up" />
-      <Label htmlFor="price-up">Giá từ thấp tới cao</Label>
-    </div>
-    <div className="flex items-center space-x-2">
-      <RadioGroupItem value="price-down" id="price-down" />
-      <Label htmlFor="price-down">Giá từ cao tới thấp</Label>
-    </div>
-  </RadioGroup>
-)
+    </RadioGroup>
+  )
 }

@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     const sortPrice = searchParams.get("sort");
     const typeCategory = searchParams.get("typeCategory");
 
-    const limit = 6;
+    const limit = 24;
     const skip = (page - 1) * limit;
 
     const category = await Category.findOne({ slug: typeCategory });
@@ -22,8 +22,12 @@ export async function GET(req: NextRequest) {
       sortCondition.price = 1;
     } else if (sortPrice === "price-down") {
       sortCondition.price = -1;
+    } else if(sortPrice === "best-selling"){
+      sortCondition.sold = -1;
+    } else if(sortPrice === "biggest-discount"){
+      sortCondition.discount_percentage = -1;
     }
-
+    
     const products = await Product.find({ category_id: category._id })
       .sort(sortCondition)
       .skip(skip)
@@ -32,7 +36,7 @@ export async function GET(req: NextRequest) {
     const totalProducts = await Product.countDocuments({
       category_id: category._id,
     });
-
+    
     return NextResponse.json(
       {
         data: products,

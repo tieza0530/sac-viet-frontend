@@ -15,19 +15,19 @@ export const SidebarHeader = () => {
 
   return (
     <div className="flex py-2 items-center justify-between lg:px-24 xl:px-48 2xl:px-80 text-[#8B5A2B] bg-white">
-      <div className="flex items-center">
+      <div className="flex items-center cursor-pointer" onClick={() => route.push('/')}>
         <Image src="/logo_.png" alt="logo1" width={60} height={60} />
         <span className="text-2xl font-bold">SẮC VIỆT</span>
       </div>
       <div className="flex justify-center items-center">
-        <Button onClick={() => route.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-black">Trang chủ</Button>
-        <Button onClick={() => route.replace('/news')} className="bg-inherit hover:bg-inherit shadow-none text-black">
+        <Button onClick={() => route.replace('/')} className="bg-inherit hover:bg-inherit shadow-none text-[var(--color-text-root)] ">Trang chủ</Button>
+        <Button onClick={() => route.replace('/news')} className="bg-inherit hover:bg-inherit shadow-none  text-[var(--color-text-root)]">
           Tin tức
         </Button>
-        <Button onClick={() => route.replace('/contact')} className="bg-inherit hover:bg-inherit shadow-none text-black">
+        <Button onClick={() => route.replace('/contact')} className="bg-inherit hover:bg-inherit shadow-none text-[var(--color-text-root)] ">
           Liên hệ
         </Button>
-        <Button onClick={() => route.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-black">Về chúng tôi</Button>
+        <Button onClick={() => route.replace('/about')} className="bg-inherit hover:bg-inherit shadow-none text-[var(--color-text-root)] ">Về chúng tôi</Button>
       </div>
       <div className="flex justify-center items-center relative">
         <InputSearch />

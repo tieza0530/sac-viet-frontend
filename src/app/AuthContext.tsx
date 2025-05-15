@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const hideHeaderFooter = pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forget-password") || pathname.startsWith("/seller-register") || pathname.startsWith("/seller")  || pathname.startsWith("/dashboard");
   return (
     <AuthContext.Provider value={{ accessToken, setAccessToken, dataUser, setDataUser, setListCategory, setListProducts, listCategory, listProducts, setArticle, article , setCart ,cart}}>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen text-[var(--color-text-root)]">
         <div>
           {!hideHeaderFooter && <Header />}
         </div>

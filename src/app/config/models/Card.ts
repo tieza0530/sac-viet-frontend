@@ -13,7 +13,7 @@ const CardSchema = new mongoose.Schema(
     list_products: [
       {
         productID: { type: String },
-        quantity: { type: Number, default: 1 },
+        quantity: { type: Number },
         added_at: { type: Date, default: Date.now },
       },
     ],
