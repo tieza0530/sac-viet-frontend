@@ -32,12 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<ProductListProps[] | null>(null);
   
   const pathname = usePathname();
-  const hideHeaderFooter = pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forget-password") || pathname.startsWith("/seller-register") || pathname.startsWith("/seller")  || pathname.startsWith("/dashboard");
+  const hideHeaderFooter =pathname.startsWith('/checkout')|| pathname.startsWith("/login") || pathname.startsWith("/register") || pathname.startsWith("/forget-password") || pathname.startsWith("/seller-register") || pathname.startsWith("/seller")  || pathname.startsWith("/dashboard");
   return (
     <AuthContext.Provider value={{ accessToken, setAccessToken, dataUser, setDataUser, setListCategory, setListProducts, listCategory, listProducts, setArticle, article , setCart ,cart}}>
       <div className="flex flex-col min-h-screen text-[var(--color-text-root)]">
         <div>
-          {!hideHeaderFooter && <Header />}
+          {!hideHeaderFooter  && <Header />}
         </div>
         <div className="flex-1 flex items-center bg-[var(--color-bg-body)] ">
           {children}

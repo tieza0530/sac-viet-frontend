@@ -22,8 +22,11 @@ export async function PATCH(req: NextRequest) {
     if (!UpdateinfoUser) {
         return NextResponse.json({ message: "Không tìm thấy thông tin user!" }, { status: 404 });
     }
-
-    UpdateinfoUser.list_address.push({address, phone, name}) ;
+    let is_default = false
+    if(UpdateinfoUser.list_address.length === 0){
+      is_default = true
+    }
+    UpdateinfoUser.list_address.push({address, phone, name , is_default}) ;
     if (UpdateinfoUser.list_address.length > 3) {
         UpdateinfoUser.list_address.shift();
       }

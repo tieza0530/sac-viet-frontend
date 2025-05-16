@@ -202,7 +202,7 @@ export default function ProductID() {
                     </div>
                     <div className="flex items-center">
                       <Button className="p-6 bg-inherit text-red-500 shadow-0 border border-red-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
-                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2">Mua ngay</Button>
+                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2" onClick={() => route.push('/checkout')}>Mua ngay</Button>
                     </div>
                   </div>
                 </div>
