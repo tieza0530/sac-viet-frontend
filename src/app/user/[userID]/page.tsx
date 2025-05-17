@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { InputFormInfoUser } from "./components/FormInfoUser";
 import { cn } from "@/lib/utils";
 import { InputFormChangePass } from "./components/FormChangePass";
-import { FormUpdateAddress } from "./components/FormUpdateAddress";
+import { ListAddress } from "./components/ListAddress";
 
 export default function Index() {
     const params = useParams()
@@ -28,7 +28,7 @@ export default function Index() {
               if(params.userID === "profile"){
                 return <InputFormInfoUser/>
               }else if(params.userID === 'address') {
-                return <FormUpdateAddress/>
+                return <ListAddress/>
               }else if(params.userID === 'change-password'){
               return <InputFormChangePass/>
               }else{

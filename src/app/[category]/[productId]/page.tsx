@@ -56,7 +56,6 @@ export default function ProductID() {
       }
     }
   }, [param.productId]);
-  console.log(checkProductDetail);
   
   useEffect(() => {
     getProductDetail();

@@ -12,13 +12,14 @@ export type UserData = {
     date_of_birth: Date;
     gender: string;
     role: string[];
-    user_address: UserAddress;
+    user_address: UserAddressProps;
     ordered: Order;
     card: Card;
   };
 };
 
-export type UserAddress = {
+export type UserAddressProps = {
+  _id: string,
   user: string;
   list_address: [
     {

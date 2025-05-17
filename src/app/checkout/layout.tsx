@@ -25,7 +25,6 @@ export default function LoginLayout({
             </span>
           </div>
           <InfoUser />
-
         </div>
       </div>
       <div className="flex-1 flex items-center bg-[var(--color-bg-body)]">

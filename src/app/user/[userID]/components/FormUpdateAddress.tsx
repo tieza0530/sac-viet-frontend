@@ -4,7 +4,7 @@ import { FormCapital } from "./address/FormCapital";
 import { FormDistrict } from "./address/FormDistrict";
 import { FormCommune } from "./address/FormCommune";
 import { InputFormDetail } from "./address/FormDetail";
-import { SelectFormAddress } from "./address/SelectAddress";
+// import { SelectFormAddress } from "./address/SelectAddress";
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -36,11 +36,7 @@ export function FormUpdateAddress() {
 
   return (
     <div >
-      <p className="text-2xl mb-4 font-medium">Danh sách địa chỉ </p>
-      <div className="h-32 mb-4">
-        <SelectFormAddress />
-      </div>
-      <div className="mt-10">
+      <div>
       <Dialog  open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className="bg-[var(--color-button)] text-white hover:bg-[var(--color-hover-button)] hover:text-white">Cập nhật</Button>

@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/app/AuthContext";
-import { UserAddress } from "@/app/components/type/user.type";
+import { UserAddressProps } from "@/app/components/type/user.type";
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 export function SelectFormAddress() {
   const { accessToken, dataUser } = useAuth();
-  const [ userAddress, setUserAddress ] = useState<UserAddress | undefined>();
+  const [ userAddress, setUserAddress ] = useState<UserAddressProps | undefined>();
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
