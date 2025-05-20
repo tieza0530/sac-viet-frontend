@@ -1,11 +1,11 @@
-import { CategoryProps, ProductProps } from "@/app/utils/fetchProduct"
+import { ProductProps } from "@/app/utils/fetchProduct"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FiTrendingDown } from "react-icons/fi";
 import { RiFireFill } from "react-icons/ri";
 
-export const TopProductsSold = ({ listProducts, listCategory }: { listProducts: ProductProps | null, listCategory: CategoryProps | null }) => {
+export const TopProductsSold = ({ listProducts }: { listProducts: ProductProps | null }) => {
     const sortProducts = listProducts?.data.sort((a, b) => b.sold - a.sold)
     const route = useRouter()
     return (
@@ -15,16 +15,12 @@ export const TopProductsSold = ({ listProducts, listCategory }: { listProducts: 
             </p>
             <div className="grid grid-cols-6 gap-2">
                 {sortProducts?.slice(0, 6).map((value, idx) => {
-                    const categorySlug = listCategory?.data.find(
-                        (category) => category._id === value.category_id
-                    )?.slug;
-
                     return (
                         <div
                             key={`product-${value._id}`}
                             onClick={() =>
                                 route.push(
-                                    `/${categorySlug ? categorySlug : "product-details"}/${value._id}`
+                                    `/product-details/${value._id}`
                                 )
                             }
                             className="relative col-span-1 p-1 rounded-sm shadow bg-white cursor-pointer"

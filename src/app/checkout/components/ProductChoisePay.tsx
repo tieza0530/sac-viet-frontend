@@ -1,5 +1,5 @@
 "use client"
-import { fetchProductDetail } from "@/app/[category]/[productId]/components/fetchProductDetail";
+import { fetchProductDetail } from "@/app/product-details/[productId]/components/fetchProductDetail";
 import { ProductProps } from "@/app/utils/fetchProduct";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";

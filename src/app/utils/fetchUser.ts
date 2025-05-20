@@ -6,7 +6,7 @@ import { getNewAccessToken } from "./getNewAccessToken";
 import { UserData } from "../components/type/user.type";
 
 export const FetchUser = () => {
-  const { accessToken, setAccessToken, setCart , setListProducts} = useAuth();
+  const { accessToken, setAccessToken, setCart } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
 
 
@@ -67,6 +67,6 @@ const updateAccessToken = useCallback(async () => {
     };
     getUser();
     getCart();
-  }, [accessToken, updateAccessToken, setCart ,setListProducts]);
+  }, [accessToken, updateAccessToken, setCart ]);
   return user;
 };

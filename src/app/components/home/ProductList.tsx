@@ -1,5 +1,5 @@
 "use client"
-import { CategoryProps, ProductProps } from "@/app/utils/fetchProduct"
+import { ProductProps } from "@/app/utils/fetchProduct"
 import Image from "next/image";
 import { FiTrendingDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
@@ -7,19 +7,16 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-export const ProductList = ({ listProducts, listCategory }: { listProducts: ProductProps | null, listCategory: CategoryProps | null }) => {
+export const ProductList = ({ listProducts }: { listProducts: ProductProps | null }) => {
   const route = useRouter()
   const [addProducts, setAddProducts] = useState(36);
   return (
     <div className="">
-      <div className="grid grid-cols-6 gap-2 mt-10">
+      <div className="grid grid-cols-6 gap-2">
         {listProducts?.data.sort(() => Math.random() - 0.5).slice(0, addProducts).map((value) => {
-          const categorySlug = listCategory?.data.find(
-            (category) => category._id === value.category_id
-          )?.slug
 
           return (
-            <div onClick={() => route.push(`/${categorySlug ? categorySlug : "product-details"}/${value._id}`)} key={`product-${value._id}`} className="relative col-span-1 p-1 rounded-sm shadow bg-white cursor-pointer" >
+            <div onClick={() => route.push(`/product-details/${value._id}`)} key={`product-${value._id}`} className="relative col-span-1 p-1 rounded-sm shadow bg-white cursor-pointer" >
               <div>
                 <Image src={'/do-tho/' + value.img[0]} alt={value.name} width={300}
                   height={300}

@@ -22,7 +22,7 @@ export default function LoginLayout({
           </div>
         </div>
       </div>
-     <div className="py-10 bg-[#EAE0C8]"> {children}</div>
+     <div className="py-10 bg-[#EAE0C8] "> {children}</div>
       <div><Footer /></div> 
       </div>
     </div>

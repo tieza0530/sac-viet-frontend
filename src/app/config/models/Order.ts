@@ -22,8 +22,8 @@ const OrderSchema = new mongoose.Schema(
           },
           payment_method: {
             type: String,
-            enum: ["cash", "credit_card", "paypal"],
-            default: "cash",
+            enum: ["cod","cash", "credit_card", "paypal"],
+            default: "cod",
           },
           is_paid: { type: Boolean, default: false },
           paid_at: { type: Date },

@@ -14,9 +14,9 @@ export default function Home() {
     <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
       <CarouselHome />
       <CategoryList listCategory={listCategory} />
-      <TopProductsSold listCategory={listCategory} listProducts={listProducts} />
-      <p className="text-3xl font-medium text-[var(--color-text-root)] flex justify-center items-center pt-10">Gợi ý hôm nay</p>
-      <ProductList listCategory={listCategory} listProducts={listProducts} />
+      <TopProductsSold  listProducts={listProducts} />
+      <p className="text-3xl font-medium text-[var(--color-text-root)] flex justify-center items-center py-10">Gợi ý hôm nay</p>
+      <ProductList listProducts={listProducts} />
       <ServiceHighlights />
     </div>
   );

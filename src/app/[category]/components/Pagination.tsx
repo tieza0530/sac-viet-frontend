@@ -1,4 +1,4 @@
-import { useAuth } from "@/app/AuthContext"
+import { ProductProps } from "@/app/utils/fetchProduct";
 import {
   Pagination,
   PaginationContent,
@@ -9,11 +9,10 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import { cn } from "@/lib/utils";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { ParamValue } from "next/dist/server/request/params";
+import {  useRouter, useSearchParams } from "next/navigation";
 
-export function PaginationProducts() {
-  const { listProducts } = useAuth();
-  const param = useParams();
+export function PaginationProducts({listProducts , param, search } : {listProducts: ProductProps | null, param?: ParamValue| undefined , search?: string | null}) {
   const searchParam = useSearchParams();
   const page = parseInt(searchParam.get("page") || "1");
   const route = useRouter();
@@ -27,14 +26,15 @@ export function PaginationProducts() {
     <Pagination className={cn("cursor-pointer text-[var(--color-text-root)]")}>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={() => route.push(`/${param.category}?page=${page > 1 ? page - 1 : 1}`)} />
+          <PaginationPrevious className="hover:text-[var(--color-text-root)]" onClick={() => route.push(`/${param ? `${param}?page=${page > 1 ? page - 1 : 1}` : `search?search=${search}&page=${page > 1 ? page - 1 : 1}`}`)} />
         </PaginationItem>
 
         {pagesToShow.map((p) => (
           <PaginationItem key={p}>
             <PaginationLink
-              onClick={() => route.push(`/${param.category}?page=${p}`)}
+              onClick={() => route.push(`/${param ? `${param}?page=${p}` : `search?search=${search}&page=${p}`}`)}
               isActive={p === page}
+              className="hover:text-[var(--color-text-root)]"
             >
               {p}
             </PaginationLink>
@@ -46,7 +46,7 @@ export function PaginationProducts() {
           </PaginationItem>
         )}
         <PaginationItem>
-          <PaginationNext onClick={() => route.push(`/${param.category}?page=${page < totalPages ? page + 1 : totalPages}`)} />
+          <PaginationNext className="hover:text-[var(--color-text-root)]" onClick={() => route.push(`/${param ? `${param}?page=${page < totalPages ? page + 1 : totalPages}` : `search?search=${search}&page=${page < totalPages ? page + 1 : totalPages}`}`)} />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

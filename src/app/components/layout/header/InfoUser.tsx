@@ -72,7 +72,9 @@ export const InfoUser = () => {
             <HoverCardContent className="mt-3 w-auto border mr-1 p-2 rounded-sm text-sm shadow-md bg-neutral-50 z-10 font-medium ">
               <Button onClick={() => route.push('/user/profile')} className="w-full bg-inherit shadow-none  hover:bg-[#dadadaab] text-[var(--color-text-root)]">Quản lý tài khoản</Button>
               <br />
-              <Button onClick={() => route.push('/cart')} className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" >Đơn hàng</Button>
+              <Button onClick={() => route.push('/cart')} className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" >Đơn mua</Button>
+              <br />
+              <Button onClick={() => route.push('/cart')} className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" >Danh sách giỏ hàng</Button>
               <br />
               {dataUser?.data.role.includes("seller") ? 
                    (<Button className="w-full bg-inherit shadow-none text-[var(--color-text-root)] hover:bg-[#dadadaab]" onClick={()=> route.push('/seller')}>Quản lý cửa hàng</Button>)

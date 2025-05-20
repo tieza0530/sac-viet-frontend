@@ -3,42 +3,50 @@
 import { ParamValue } from "next/dist/server/request/params";
 import { NEXT_PUBLIC_LOCAL } from "../helper/constant";
 import { ProductProps } from "../utils/fetchProduct";
-import { useAuth } from "../AuthContext";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ResultProductsSearch } from "./components/ResultProductsSearch";
+import { GiCardboardBox } from "react-icons/gi";
 
 export default function Search() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const { setListProducts } = useAuth()
+  const [resultProducts, setResultProducts] = useState<ProductProps>()
+    const paramPage = useSearchParams();
+
   useEffect(() => {
-   const getProductSearch = async (param : ParamValue) => {
-      try{
-          const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/search?search=${param}`, {
-            method: "GET",
-            cache: "no-store",
-          });
-  
-          if (!res.ok) throw new Error("Unauthorized");
-          const data: ProductProps = await res.json();
-          return setListProducts(data)
-        
+    const getProductSearch = async (param: ParamValue) => {
+      try {
+        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/search?search=${param}&page=${paramPage.get("page") || 1}`, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error("Unauthorized");
+        const data: ProductProps = await res.json();
+        return setResultProducts(data)
+
       } catch (error) {
         console.log(error);
         return null;
       }
-    }; 
-  
-    if(search){
+    };
+
+    if (search) {
       getProductSearch(search)
     }
-    }, [search , setListProducts])
-    
-    return (
-         <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
-             <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center pt-10">Kết quả tìm kiếm {search}</p>
-            {/* {listProducts?.data.length  ? <ProductListInCategory listCategory={listCategory}  listProducts={listProducts}/> : "Không tìm thấy sản phẩm phù hợp!"} */}
-         </div>
-    );
-  }
+  }, [search, setResultProducts, paramPage])
+  console.log(resultProducts);
   
+  return (
+    <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
+      <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center my-10 p-6 rounded-sm shadow bg-white">Kết quả tìm kiếm {search}</p>
+      {resultProducts?.data.length ? <ResultProductsSearch resultProducts={resultProducts} search={search} /> :
+        <div className="col-span-4 flex flex-col justify-center items-center mt-20">
+          <GiCardboardBox className="text-6xl" />
+          <p>Chưa có sản phẩm {search} nào trên sàn.</p>
+          <p>Vui lòng tìm sản phẩm khác hoặc quay lại sau.</p>
+        </div>}
+    </div>
+  );
+}

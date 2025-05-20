@@ -3,27 +3,14 @@ import { ProductProps } from "@/app/utils/fetchProduct"
 import Image from "next/image";
 import { FiTrendingDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
-import { useParams, useRouter } from "next/navigation";
-import { OptionPrice } from "./OptionPrice";
-import { PaginationProducts } from "./Pagination";
-import { GiCardboardBox } from "react-icons/gi";
-import CategoryDetails from "./CategoryDetails";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PaginationProducts } from "@/app/[category]/components/Pagination";
 
-export const ProductListInCategory = ({ listProducts }: { listProducts: ProductProps | null }) => {
+export const ResultProductsSearch = ({ resultProducts , search }: { resultProducts: ProductProps | null ,search: string|null}) => {
   const route = useRouter()
-  const [resultProducts, setResultProducts] = useState<ProductProps | null>(listProducts)
-  const param = useParams()
   return (
-    <div className="grid grid-cols-4 mt-10">
-      <div className="col-span-1 mr-4">
-        <CategoryDetails />
-        <p className="text-xl font-medium mt-6">Sắp xếp theo:</p>
-        <OptionPrice setResultProducts={setResultProducts} />
-      </div>
-      <div className="col-span-3">
-        <div className="grid grid-cols-4 gap-2 ">
-          {resultProducts?.data.length ?
+        <div className="grid grid-cols-6 gap-2 mt-10 ">
+          {
             resultProducts?.data.map((value) => {
               return (
                 <div onClick={() => route.push(`/product-details/${value._id}`)} key={`product-${value._id}`} className="relative col-span-1 p-1 rounded-sm shadow bg-white cursor-pointer" >
@@ -44,19 +31,11 @@ export const ProductListInCategory = ({ listProducts }: { listProducts: ProductP
                   </div>
                 </div>
               )
-            }) :
-            <div className="col-span-4 flex flex-col justify-center items-center mt-20">
-              <GiCardboardBox className="text-6xl" />
-              <p>Chưa có sản phẩm nào trên sàn.</p>
-              <p>Vui lòng chọn danh mục khác hoặc quay lại sau.</p>
-
-            </div>
+            })
           }
 
-        </div>
-      </div>
-      <div className="flex col-span-4 justify-center items-center my-10">
-        {resultProducts && resultProducts.totalPages > 1 && <PaginationProducts listProducts={resultProducts} param={param.category} />}
+      <div className="flex col-span-6 justify-center items-center my-10">
+        {resultProducts && resultProducts.totalPages > 1 && <PaginationProducts  listProducts={resultProducts} search={search}/>}
       </div>
     </div>
   )

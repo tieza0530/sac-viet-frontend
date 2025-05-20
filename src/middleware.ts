@@ -11,13 +11,16 @@ export function middleware(req: NextRequest) {
   if(pathname.startsWith("/user") && !cookieCheckUser ){
     return NextResponse.redirect(new URL('/not-found', req.url));
   }
+  if ((pathname === "/checkout" || pathname === "/cart") && !cookieCheckUser) {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
 
-  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/confirm-email" || pathname === '/forget-password' )) {
+  if (cookieCheckUser && (pathname === "/login" || pathname === "/register" || pathname === "/confirm-email" || pathname === '/forget-password'  )) {
     return NextResponse.redirect(new URL('/', req.url)); 
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/confirm-email", "/login", "/register", '/forget-password', "/user/:path*"], 
+  matcher: ["/confirm-email", "/login", "/register", '/forget-password', "/user/:path*" ,"/checkout" , "/cart"], 
 };

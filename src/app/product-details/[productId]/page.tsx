@@ -25,6 +25,8 @@ import { ShowAlert } from "@/app/helper/ShowAlert";
 import { FaStar } from "react-icons/fa6";
 import { LuUserRound } from "react-icons/lu";
 import NotFound from "@/app/not-found";
+import { OtherProductsOfShop } from "./components/OtherProductsOfShop";
+import { ProductList } from "@/app/components/home/ProductList";
 
 export default function ProductID() {
   const param = useParams();
@@ -32,7 +34,7 @@ export default function ProductID() {
   const [review, setReview] = useState<ReviewProps | null>(null);
   const [changeImg, setChangeImg] = useState(0);
   const [quantityChoise, setQuantityChoise] = useState<number>(1);
-  const { setCart, accessToken } = useAuth()
+  const { setCart, accessToken, listProducts } = useAuth()
   const [showAlert, setShowAlert] = useState(false)
   const [checkProductDetail, setCheckProductDetail] = useState(true)
   const route = useRouter()
@@ -228,9 +230,9 @@ export default function ProductID() {
                 <p className="text-2xl font-medium my-6">Hướng dẫn sử dụng</p>
                 <p>{value.care_instructions}</p>
               </div>
-              <div className="p-4 bg-white rounded-sm mt-3">
-                <p className="text-2xl font-medium mb-6">Đánh giá sản phẩm</p>
-                {review?.data.map((value) => {
+              <div className="p-4 bg-white rounded-sm mt-3 min-h-96">
+                <p className="text-2xl font-medium mb-6 ">Đánh giá sản phẩm</p>
+                {review?.data.length ? review?.data.slice(0, 6).map((value) => {
                   return (
                     <div key={`review-${value._id}`} className="my-6">
                       <div className="flex mb-2">
@@ -252,8 +254,15 @@ export default function ProductID() {
                       </div>
                     </div>
                   )
-                })}
+                }): 
+                <div className="flex justify-center items-center mt-20 text-neutral-200">
+                  <p>Chưa có đánh giá nào.</p>
+                </div> 
+              }
               </div>
+                 <OtherProductsOfShop sellerID={product?.data[0].seller_id}/>
+                 <p className="font-medium text-2xl p-4 py-6 bg-white rounded-sm shadow my-3">Có thể bạn cũng thích</p>
+                <ProductList listProducts={listProducts}/>
             </div>
           );
         })) :

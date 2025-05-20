@@ -1,6 +1,5 @@
 "use client"
 
-import { useAuth } from "@/app/AuthContext"
 import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant"
 import { ProductProps } from "@/app/utils/fetchProduct"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -8,17 +7,15 @@ import { Label } from "@radix-ui/react-label"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export function OptionPrice() {
+export function OptionPrice({setResultProducts} : {setResultProducts: React.Dispatch<React.SetStateAction<ProductProps| null>>}) {
   const [selectedChoice, setselectedChoice] = useState("")
-  const { setListProducts } = useAuth();
   const route = useRouter()
   const param = useParams()
   const paramPage = useSearchParams();
-  
+
   useEffect(() => {
       const fetchData = async () => {
         try {
-          // route.push(`/${param.category}?page=${paramPage.get('page') || 1}${selectedChoice && `&sort=${selectedChoice}`}`)
           const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/product-follow-category?typeCategory=${param.category}&page=${paramPage.get("page") || 1}&sort=${selectedChoice}`, {
             method: "GET",
             cache: "no-store",
@@ -27,13 +24,13 @@ export function OptionPrice() {
           if (!res.ok) throw new Error("Unauthorized");
           const result = await res.json();
           const data: ProductProps = result;
-          setListProducts(data);
+          setResultProducts(data);
         } catch (error) {
           console.error(error);
         }
       };
       fetchData();
-  }, [param.category, paramPage, route ,selectedChoice, setListProducts]);
+  }, [param.category, paramPage, route ,selectedChoice, setResultProducts]);
 
   return (
     <RadioGroup className="mt-4" value={selectedChoice}

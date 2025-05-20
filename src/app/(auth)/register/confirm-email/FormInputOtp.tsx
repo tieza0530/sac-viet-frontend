@@ -83,7 +83,7 @@ export function InputOTPForm({confirmAccess}: {confirmAccess: string|undefined})
     }
   };
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center h-full my-36">
       {!checkSatusOtp ? (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">

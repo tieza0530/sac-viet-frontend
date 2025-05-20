@@ -79,7 +79,7 @@ export function RegisterForm({
                 <Input
                   placeholder="Nhập tài khoản"
                   {...field}
-                  className="h-10"
+                  className="h-10  "
                 />
               </FormControl>
               <FormMessage className="absolute -bottom-4" />
