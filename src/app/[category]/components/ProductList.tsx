@@ -10,21 +10,21 @@ import { GiCardboardBox } from "react-icons/gi";
 import CategoryDetails from "./CategoryDetails";
 import { useState } from "react";
 
-export const ProductListInCategory = ({ listProducts }: { listProducts: ProductProps | null }) => {
+export const ProductListInCategory = ({ resultProducts }: { resultProducts: ProductProps | null }) => {
   const route = useRouter()
-  const [resultProducts, setResultProducts] = useState<ProductProps | null>(listProducts)
+  const [resultProduct, setResultProduct] = useState<ProductProps | null>(resultProducts)
   const param = useParams()
   return (
     <div className="grid grid-cols-4 mt-10">
       <div className="col-span-1 mr-4">
         <CategoryDetails />
         <p className="text-xl font-medium mt-6">Sắp xếp theo:</p>
-        <OptionPrice setResultProducts={setResultProducts} />
+        <OptionPrice setResultProducts={setResultProduct} />
       </div>
       <div className="col-span-3">
         <div className="grid grid-cols-4 gap-2 ">
-          {resultProducts?.data.length ?
-            resultProducts?.data.map((value) => {
+          {resultProduct?.data.length ?
+            resultProduct?.data.map((value) => {
               return (
                 <div onClick={() => route.push(`/product-details/${value._id}`)} key={`product-${value._id}`} className="relative col-span-1 p-1 rounded-sm shadow bg-white cursor-pointer" >
                   <div>
