@@ -31,14 +31,14 @@ export default function ProductID() {
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [review, setReview] = useState<ReviewProps | null>(null);
   const [changeImg, setChangeImg] = useState(0);
-  const [quantityChoise, setQuantityChoise] = useState(1);
+  const [quantityChoise, setQuantityChoise] = useState<number>(1);
   const { setCart, accessToken } = useAuth()
   const [showAlert, setShowAlert] = useState(false)
   const [ checkProductDetail , setCheckProductDetail] = useState(true)
   const route = useRouter()
+    const productId = param.productId;
 
   const getProductDetail = useCallback(async () => {
-    const productId = param.productId;
     if (typeof productId === "string" && productId) {
       try {
         const product = await fetchProductDetail(productId);
@@ -55,7 +55,7 @@ export default function ProductID() {
         console.error("Failed to fetch product:", error);
       }
     }
-  }, [param.productId]);
+  }, [productId]);
   
   useEffect(() => {
     getProductDetail();
@@ -88,6 +88,7 @@ export default function ProductID() {
         },
         body: JSON.stringify({
           productId: product?.data[0]._id,
+          quantityChoise: quantityChoise
         })
       })
       if (res.status === 200) {
@@ -107,6 +108,7 @@ export default function ProductID() {
 
             if (!res.ok) throw new Error("Unauthorized");
             const data = await res.json();
+            
             return setCart(data.data.flat());
           }
         } catch (error) {
@@ -183,11 +185,11 @@ export default function ProductID() {
                   </div>
                   <div >
                     <p className="mt-4 text-sm text-neutral-400">An tâm mua sắm cùng Sắc Việt</p>
-                    <div className=" grid-cols-6 mt-2 text-xs justify-between items-center">
-                      <p className="border-r">Đổi trả miễn phí trong vòng 15 ngày</p>
-                      <p className="border-r mx-1">Hỗ trợ giao hàng tận nhà</p>
-                      <p className="border-r mx-1">100% Hoàn tiền nếu sản phẩm lỗi</p>
-                      <p className="ml-1">Thanh toán Với nhiều phương thức</p>
+                    <div className="grid-cols-6 mt-2 text-xs justify-between items-center">
+                      <p className="">Đổi trả miễn phí trong vòng 15 ngày</p>
+                      <p className="">Hỗ trợ giao hàng tận nhà</p>
+                      <p className="">100% Hoàn tiền nếu sản phẩm lỗi</p>
+                      <p className="">Thanh toán Với nhiều phương thức</p>
                     </div>
                   </div>
                   <div>
@@ -200,8 +202,8 @@ export default function ProductID() {
                       <span className="ml-6 text-sm text-neutral-400">{value.inventory} sản phẩm có sẵn</span>
                     </div>
                     <div className="flex items-center">
-                      <Button className="p-6 bg-inherit text-red-500 shadow-0 border border-red-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
-                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2" onClick={() => route.push('/checkout')}>Mua ngay</Button>
+                      <Button className="p-6 bg-inherit text-red-500 shadow-0 border stringed-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
+                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2" onClick={() => route.push(`/checkout?product-id=${productId}&quantity-product=${quantityChoise}`)}>Mua ngay</Button>
                     </div>
                   </div>
                 </div>

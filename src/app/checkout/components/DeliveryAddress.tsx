@@ -9,9 +9,8 @@ import { FormUpdateAddress } from "@/app/user/[userID]/components/FormUpdateAddr
 
 export default function DeliveryAddress() {
   const { accessToken, dataUser } = useAuth();
-  const [userAddress, setUserAddress] = useState<
-    UserAddressProps | undefined
-  >();
+  const [userAddress, setUserAddress] = useState< UserAddressProps | undefined>();
+  
   useEffect(() => {
     const getAddress = async () => {
       if (accessToken) {
@@ -38,7 +37,7 @@ export default function DeliveryAddress() {
         userAddress?.list_address.map((value) => {
           if (!value.is_default) {
             return;
-          }
+          }          
           return (
             <div key={value._id} className="text-black mt-2 ml-2">
               <strong>

@@ -57,7 +57,7 @@ const updateAccessToken = useCallback(async () => {
           });
 
           if (!res.ok) throw new Error("Unauthorized");
-          const data = await res.json();
+          const data = await res.json();          
           return setCart(data.data.flat());
         }
       } catch (error) {

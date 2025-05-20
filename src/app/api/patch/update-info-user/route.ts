@@ -15,7 +15,6 @@ export async function PATCH(req: NextRequest) {
     const {fullname, phoneNumber, dateOfBirth , gender} = await req.json();
 
     const UpdateinfoUser = await User.findOne({_id: decoded.id}).select("-password -token");
-    console.log(UpdateinfoUser);
 
     if (!UpdateinfoUser) {
         return NextResponse.json({ message: "Không tìm thấy thông tin user!" }, { status: 404 });

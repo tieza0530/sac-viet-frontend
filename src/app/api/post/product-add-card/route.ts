@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    const { productId } = await req.json();
+    const { productId, quantityChoise  } = await req.json();
     const findCard = await Card.findOne({ user: decoded.id });
     if (!findCard) {
       return NextResponse.json({ message: "Not Found!" }, { status: 404 });
@@ -32,11 +32,13 @@ export async function POST(req: NextRequest) {
     const index = findCard.list_products.findIndex((item: ListProductProps) => item.productID === productId);
     if(index !== -1){
       const [existingProduct] = findCard.list_products.splice(index, 1);
+       existingProduct.quantity = quantityChoise;
       findCard.list_products.unshift(existingProduct)
     }else{
-      findCard.list_products.unshift({ productID: productId });
+      findCard.list_products.unshift({ productID: productId, quantity: quantityChoise });
     }
     await findCard.save();
+    
     return NextResponse.json({ data: findCard , message: " Success!" }, { status: 200 });
   } catch (error) {
     console.error("Lỗi xác thực:", error);

@@ -30,8 +30,7 @@ export default async function sendEmail(to: string, subject: string, text: strin
             text,
         };
 
-        const result = await transporter.sendMail(mailOptions);
-        console.log("Email sent:", result);
+        await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error("Error sending email:", error);
     }
