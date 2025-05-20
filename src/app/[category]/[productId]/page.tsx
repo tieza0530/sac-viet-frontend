@@ -34,9 +34,9 @@ export default function ProductID() {
   const [quantityChoise, setQuantityChoise] = useState<number>(1);
   const { setCart, accessToken } = useAuth()
   const [showAlert, setShowAlert] = useState(false)
-  const [ checkProductDetail , setCheckProductDetail] = useState(true)
+  const [checkProductDetail, setCheckProductDetail] = useState(true)
   const route = useRouter()
-    const productId = param.productId;
+  const productId = param.productId;
 
   const getProductDetail = useCallback(async () => {
     if (typeof productId === "string" && productId) {
@@ -48,15 +48,15 @@ export default function ProductID() {
           if (review) {
             setReview(review)
           }
-        }else{
-         setCheckProductDetail(false)
+        } else {
+          setCheckProductDetail(false)
         }
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
     }
   }, [productId]);
-  
+
   useEffect(() => {
     getProductDetail();
   }, [param.productId, getProductDetail]);
@@ -108,7 +108,7 @@ export default function ProductID() {
 
             if (!res.ok) throw new Error("Unauthorized");
             const data = await res.json();
-            
+
             return setCart(data.data.flat());
           }
         } catch (error) {
@@ -119,6 +119,14 @@ export default function ProductID() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handlePayNow = () => {
+    if (!accessToken) {
+      route.push('/login')
+      return
+    }
+    route.push(`/checkout?product-id=${productId}&quantity-product=${quantityChoise}`)
   }
   return (
     <div className="lg:mx-24 xl:mx-48 2xl:mx-80 mt-28 mb-10 ">
@@ -179,7 +187,7 @@ export default function ProductID() {
                     <div className="flex justify-center items-center"><p className="border-b-1 mr-1">{value.sold}</p> <span className="text-sm text-neutral-600">Lượt bán</span></div>
                   </div>
                   <div>
-                    <p className="text-sm mt-4 line-through">  {new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value.price)}</p>
+                    <p className="text-sm mt-4 line-through">{new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(value.price)}</p>
                     <p className="text-3xl mt-1 text-red-500">{new Intl.NumberFormat("vi-Vn", { style: "currency", currency: "VND" }).format((value.price / 100) * (100 - value.discount_percentage))} <span className="text-sm">-{value.discount_percentage}%</span>
                     </p>
                   </div>
@@ -203,7 +211,7 @@ export default function ProductID() {
                     </div>
                     <div className="flex items-center">
                       <Button className="p-6 bg-inherit text-red-500 shadow-0 border stringed-300 hover:bg-inherit px-10" onClick={() => handleAddProduct()}><BsCartPlus />Thêm vào giỏ hàng</Button>
-                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2" onClick={() => route.push(`/checkout?product-id=${productId}&quantity-product=${quantityChoise}`)}>Mua ngay</Button>
+                      <Button className="p-6 bg-red-500 text-white shadow-0 hover:bg-red-500/85 px-10 ml-2" onClick={() => handlePayNow()}>Mua ngay</Button>
                     </div>
                   </div>
                 </div>
@@ -248,7 +256,7 @@ export default function ProductID() {
               </div>
             </div>
           );
-        })): 
+        })) :
         <NotFound />
       }
     </div>
