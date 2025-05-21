@@ -10,7 +10,7 @@ export const Header = () => {
   return (
     <div className="fixed w-full z-999">
       <div className="bg-[var(--color-background-main)]">
-        <div className="lg:mx-24 xl:mx-48 2xl:mx-80  flex justify-between items-center text-[var(--color-text-root)]">
+        <div className="mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 flex justify-between items-center text-[var(--color-text-root)]">
           <div className="flex ml-2 text-sm">
             <RiFacebookFill />
             <RiTiktokFill className="mx-2" />

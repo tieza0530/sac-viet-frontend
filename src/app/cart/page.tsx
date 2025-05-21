@@ -175,7 +175,7 @@ export default function Card() {
     }
 
     return (
-        <div className="lg:mx-24 xl:mx-48 2xl:mx-80 min-h-screen mt-28 mb-10 ">
+        <div className="mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 min-h-screen mt-28 mb-10 ">
             <div className="grid grid-cols-2 bg-white p-6 items-center rounded-sm ">
                 <p className="text-2xl font-medium">Danh sách giỏ hàng</p>
                 <div className="grid grid-cols-4 text-neutral-400 text-center">

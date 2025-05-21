@@ -23,7 +23,7 @@ export default function Checkout() {
     }, [])
 
     return (
-        <div className="lg:mx-24 xl:mx-48 2xl:mx-80 mt-32">
+        <div className="mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 mt-32">
             <DeliveryAddress />
             <div className="bg-white p-6 rounded-xl mt-4 mb-4">
                 <div className="grid grid-cols-6">

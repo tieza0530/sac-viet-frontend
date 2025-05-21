@@ -11,7 +11,7 @@ export default function SellerRegisterLayout({
   return (
     <div className="items-start h-screen">
       <div className="bg-white">
-        <div className="py-4 grid grid-cols-4 items-center lg:mx-24  xl:mx-48 2xl:mx-80  text-[#8B5A2B] ">
+        <div className="py-4 grid grid-cols-4 items-center mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10   text-[#8B5A2B] ">
           <div className="col-span-1 flex items-center cursor-pointer" onClick={() => roter.push('/')} title="Về trang chủ">
             <Image src={'/logo_.png'} width={60} height={60} alt="logo" />
             <span className="font-bold text-3xl flex w-full">SẮC VIỆT</span>

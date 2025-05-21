@@ -39,7 +39,7 @@ export default function Search() {
   console.log(resultProducts);
   
   return (
-    <div className="lg:mx-24 xl:mx-48 2xl:mx-80 pt-28">
+    <div className="mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 pt-28">
       <p className="text-3xl font-bold text-[var(--color-text-root)] flex justify-center items-center my-10 p-6 rounded-sm shadow bg-white">Kết quả tìm kiếm {search}</p>
       {resultProducts?.data.length ? <ResultProductsSearch resultProducts={resultProducts} search={search} /> :
         <div className="col-span-4 flex flex-col justify-center items-center mt-20">
