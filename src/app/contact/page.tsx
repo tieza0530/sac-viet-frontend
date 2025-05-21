@@ -7,7 +7,7 @@ import { BreadCrumb } from "./components/BreadCrumb";
 
 export default function Contact() {
   return (
-    <div className="pt-20 mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10  flex flex-col justify-center">
+    <div className="pt-20 mx-24 2xl:mx-80 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10  flex flex-col justify-center">
       <div className="mt-10">
        <BreadCrumb />
       </div>

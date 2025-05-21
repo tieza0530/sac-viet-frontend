@@ -12,7 +12,7 @@ export default function LoginLayout({
   return (
     <div className="flex flex-col min-h-screen text-[var(--color-text-root)]">
       <div className="bg-white">
-        <div className="py-4 flex items-center justify-between mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 text-[#8B5A2B] ">
+        <div className="py-4 flex items-center justify-between mx-24 2xl:mx-80 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 text-[#8B5A2B] ">
           <div
             className="flex  items-center cursor-pointer"
             onClick={() => roter.push("/")}
