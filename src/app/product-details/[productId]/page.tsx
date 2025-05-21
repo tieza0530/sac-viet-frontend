@@ -131,7 +131,7 @@ export default function ProductID() {
     route.push(`/checkout?product-id=${productId}&quantity-product=${quantityChoise}`)
   }
   return (
-    <div className="mx-24 2xl:mx-80 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 mt-28 mb-10 ">
+    <div className="mx-28 max-2xl:mx-24 max-xl:mx-20 max-lg:mx-10 mt-28 mb-10 ">
       {checkProductDetail ?
         (product?.data.map((value) => {
           return (
