@@ -1,33 +1,62 @@
 import mongoose from "mongoose";
 
+export type OrderProps = {
+  _id: string;
+  user: string;
+  list_orders: [
+    {
+      _id: string;
+      products: [
+        {
+          productID: string;
+          quantity: number;
+        }
+      ];
+      order_at: Date;
+      address_ship: string;
+      total_money_ship: number;
+      status: string;
+      payment_method: string;
+      is_paid: boolean;
+      paid_at: Date;
+      is_review: boolean;
+      cancelled_at: Date;
+    }
+  ];
+};
+
 const OrderSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    list_products: [
+    list_orders: [
       {
-        productID: { type: String, required: true },
-        quantity: { type: Number, required: true },
+        products: [
+          {
+            productID: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "Product",
+              required: true,
+            },
+            quantity: { type: Number, required: true },
+          },
+        ],
         order_at: { type: Date, default: Date.now },
+        address_ship: { type: String },
+        total_money_ship: { type: Number },
         status: {
-            type: String,
-            enum: [
-              "pending",
-              "processing",
-              "shipped",
-              "delivered",
-              "cancelled",
-              "returned",
-            ],
-            default: "pending",
-          },
-          payment_method: {
-            type: String,
-            enum: ["cod","cash", "credit_card", "paypal"],
-            default: "cod",
-          },
-          is_paid: { type: Boolean, default: false },
-          paid_at: { type: Date },
-          cancelled_at: { type: Date },
+          type: String,
+          enum: ["pending", "shipped", "delivered", "cancelled", "returned"],
+          default: "pending",
+        },
+        payment_method: {
+          type: String,
+          enum: ["cod", "bank-transfer", "credit_card", "paypal"],
+          default: "cod",
+        },
+        is_paid: { type: Boolean, default: false },
+        paid_at: { type: Date },
+        is_review: { type: Boolean, default: false },
+        cancelled_at: { type: Date },
       },
     ],
   },

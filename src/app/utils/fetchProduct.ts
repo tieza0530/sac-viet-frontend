@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { NEXT_PUBLIC_LOCAL } from "../helper/constant";
+import { getProducts } from "./fetchProducts";
 
 export type ProductProps = {
   data: [
@@ -95,6 +96,7 @@ export type ReviewProps = {
       rating: number;
       comment: string;
       images: string[];
+      user_name: string;
     }
   ];
   message: string;
@@ -102,25 +104,6 @@ export type ReviewProps = {
 export const FetchProducts = () => {
   const { setListProducts, setListCategory, setArticle } = useAuth();
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/product`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const data: ProductProps = await res.json();
-        return setListProducts(data);
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
-    };
     const getCategory = async () => {
       try {
         const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/category`, {
@@ -158,7 +141,7 @@ export const FetchProducts = () => {
       }
     };
     getCategory();
-    getProducts();
+    getProducts({setListProducts})
     getArticle();
   }, [setListCategory, setListProducts, setArticle]);
 };

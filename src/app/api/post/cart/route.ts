@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
 import Product from "@/app/config/models/Product";
-import Card, { ListProductProps } from "@/app/config/models/Card";
+import Card, { ListProductProps } from "cart";
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

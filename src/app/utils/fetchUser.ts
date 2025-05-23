@@ -9,7 +9,6 @@ export const FetchUser = () => {
   const { accessToken, setAccessToken, setCart } = useAuth();
   const [user, setUser] = useState<UserData | null>(null);
 
-
 const updateAccessToken = useCallback(async () => {
     const newToken = await getNewAccessToken();
     if (newToken) {

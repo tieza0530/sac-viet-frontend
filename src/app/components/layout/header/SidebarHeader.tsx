@@ -9,9 +9,11 @@ import { useEffect } from "react";
 
 export const SidebarHeader = () => {
   const route = useRouter();
-  const { cart, listCategory } = useAuth();
+  const { cart } = useAuth();
+  
   useEffect(() => {
-  }, [cart])
+
+  }, [cart ])
 
   return (
     <div className=" bg-white">
@@ -50,11 +52,8 @@ export const SidebarHeader = () => {
               <Button className="text-white bg-red-500 hover:bg-red-500/75" hidden={cart?.length === 0 || cart?.length === undefined} onClick={() => route.push('/cart')}>Xem giỏ hàng</Button>
             </div>
             {cart?.map((value, idx) => {
-              const categorySlug = listCategory?.data.find(
-                (category) => category._id === value.category_id
-              )?.slug
               return (
-                <div key={`product-in-cart-${value._id + idx}`} className="mt-2 flex cursor-pointer" onClick={() => route.push(`/${categorySlug}/${value._id}`)}>
+                <div key={`product-in-cart-${value._id + idx}`} className="mt-2 flex cursor-pointer" onClick={() => route.push(`/product-details/${value._id}`)}>
                   <Image
                     src={`/do-tho/${value.img[0]}`}
                     alt="anh-san-pham"

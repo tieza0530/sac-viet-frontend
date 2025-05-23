@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
 import Product from "@/app/config/models/Product";
-import Card, { ListProductProps } from "@/app/config/models/Card";
+import Cart, { ListProductProps } from "@/app/config/models/Cart";
 
 export async function GET(req: NextRequest) {
 const authHeader = req.headers.get("authorization");
@@ -15,7 +15,7 @@ const authHeader = req.headers.get("authorization");
     const decoded = jwt.verify(token, SECRET_KEY as string) as {id: string, email: string , account: string};
 
     if (decoded) {
-      const findCard = await Card.findOne({ user: decoded.id})
+      const findCard = await Cart.findOne({ user: decoded.id})
       
       if (!findCard) {
         return NextResponse.json({ error: "Invalid token" }, { status: 401 });

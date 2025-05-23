@@ -1,33 +1,11 @@
 "use client";
-import { useAuth } from "@/app/AuthContext";
 import { UserAddressProps } from "@/app/components/type/user.type";
-import { NEXT_PUBLIC_LOCAL } from "@/app/helper/constant";
-import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { AlertDialogAdd } from "./AlertDialogAdd";
 import { FormUpdateAddress } from "@/app/user/[userID]/components/FormUpdateAddress";
 
-export default function DeliveryAddress() {
-  const { accessToken, dataUser } = useAuth();
-  const [userAddress, setUserAddress] = useState< UserAddressProps | undefined>();
+export default function DeliveryAddress({userAddress ,setUserAddress }: {userAddress:  UserAddressProps | undefined , setUserAddress: React.Dispatch<React.SetStateAction<UserAddressProps|undefined>>}) {
   
-  useEffect(() => {
-    const getAddress = async () => {
-      if (accessToken) {
-        const res = await fetch(`${NEXT_PUBLIC_LOCAL}/api/get/user-address`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const data = await res.json();
-        setUserAddress(data.data);
-      }
-    };
-    getAddress();
-  }, [accessToken, dataUser, setUserAddress]);
-
   return (
     <div className="bg-white rounded-xl p-6 w-full">
       <p className="flex items-center text-xl">

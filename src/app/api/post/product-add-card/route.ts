@@ -1,7 +1,7 @@
 import { SECRET_KEY } from "@/app/helper/constant";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import Card, { ListProductProps } from "@/app/config/models/Card";
+import Cart, { ListProductProps } from "@/app/config/models/Cart";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const { productId, quantityChoise  } = await req.json();
-    const findCard = await Card.findOne({ user: decoded.id });
+    const findCard = await Cart.findOne({ user: decoded.id });
     if (!findCard) {
       return NextResponse.json({ message: "Not Found!" }, { status: 404 });
     }

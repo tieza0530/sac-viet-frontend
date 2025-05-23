@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "@/app/config/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import { SECRET_KEY } from "@/app/helper/constant";
-import Card from "@/app/config/models/Card";
+import Cart from "@/app/config/models/Cart";
 import UserAddress from "@/app/config/models/UserAddress";
 import Order from "@/app/config/models/Order";
 
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
         expiresIn: "7d",
       }
     );
-    const card = await Card.create({
+    const card = await Cart.create({
       user: id,
     });
     const userAddress = await UserAddress.create({

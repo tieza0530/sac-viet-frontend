@@ -238,8 +238,11 @@ export default function ProductID() {
                       <div className="flex mb-2">
                         <LuUserRound className="text-3xl" />
                         <div>
-                          <p>{(value.user_id).slice(0, 6) + "*".repeat((value.user_id).length - 6)}</p>
-                          <div className="flex">
+                          <p>
+                            {value.user_name.slice(0, 6) +
+                              "*".repeat(value.user_name.length - 11) +
+                              value.user_name.slice(-5)}
+                          </p>                          <div className="flex">
                             {[...Array(value.rating)].map((_, idx) => (
                               <FaStar className="text-yellow-300" key={idx} />
                             ))}
@@ -254,15 +257,15 @@ export default function ProductID() {
                       </div>
                     </div>
                   )
-                }): 
-                <div className="flex justify-center items-center mt-20 text-neutral-200">
-                  <p>Chưa có đánh giá nào.</p>
-                </div> 
-              }
+                }) :
+                  <div className="flex justify-center items-center mt-20 text-neutral-200">
+                    <p>Chưa có đánh giá nào.</p>
+                  </div>
+                }
               </div>
-                 <OtherProductsOfShop sellerID={product?.data[0].seller_id}/>
-                 <p className="font-medium text-2xl p-4 py-6 bg-white rounded-sm shadow my-3">Có thể bạn cũng thích</p>
-                <ProductList listProducts={listProducts}/>
+              <OtherProductsOfShop sellerID={product?.data[0].seller_id} />
+              <p className="font-medium text-2xl p-4 py-6 bg-white rounded-sm shadow my-3">Có thể bạn cũng thích</p>
+              <ProductList listProducts={listProducts} />
             </div>
           );
         })) :
